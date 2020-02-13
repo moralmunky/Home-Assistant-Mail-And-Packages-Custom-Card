@@ -1,7 +1,26 @@
 # Home-Assistant-Mail-And-Packages-Custom-Card
 A Custom Lovelace card to pull together the mail and packages sensors.
 
+## Lovelace GUI Setup
 
+Add the js path relative to the /local/ path to the resources section of the lovelace yaml or at the top of the GUI lovelace RAW configuration editor.
+```
+resources:
+  - type: js
+    url: /local/mail_and_packages/mail_and_packages.js?v=.01
+```
+Add the card configuration to the cards: section of the view you want to display the card in.
+```
+  - type: 'custom:mail-and-packages'
+    deliver_today: sensor.mail_deliveries_today
+    fedex: sensor.mail_fedex_packages
+    in_transit: sensor.mail_packages_in_transit
+    last_update: sensor.mail_updated
+    mail: sensor.mail_usps_mail
+    summary: sensor.mail_deliveries_message
+    ups: sensor.mail_ups_packages
+    usps: sensor.mail_usps_packages
+```
 
 ## Template
 Use the following to create a deliveries summary sensor:
