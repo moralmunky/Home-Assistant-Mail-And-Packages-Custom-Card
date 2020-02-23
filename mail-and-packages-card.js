@@ -112,34 +112,36 @@ class MailAndPackagesCard extends LitElement {
 
         return html `
       <div class="details">
-        
-        ${this._config.name
-          ? html`
-              <span class="title"> ${this._config.name} </span>
-            `
-          : ""}
-      <div style="clear: both;">
-      <br>
-           <span style="float: right;"><span class="mail-iron-icon"><iron-icon icon="mdi:package-variant"></iron-icon></span>Today's Deliveries: ${packages_delivered}</span>
-           <span class="mail-iron-icon"><iron-icon icon="mdi:truck-delivery"></iron-icon></span>In Transit: ${packages_in_transit}
-        </div>
-        <br>
-        ${deliveries_message}
-	    <br>
-      <span>
-        <ul>
-           <li><span class="mail-iron-icon"><iron-icon icon="mdi:package-variant-closed"></iron-icon></span><a href="https://wwwapps.ups.com/mcdp" title="Open the UPS MyChoice site" target="_blank">UPS: ${ups_packages}</a></li>
-           <li><span class="mail-iron-icon"><iron-icon icon="mdi:package-variant-closed"></iron-icon></span><a href="https://www.fedex.com/apps/fedextracking" title="Open the Fedex site" target="_blank">Fedex: ${fedex_packages}</a></li>
-           <li><span class="mail-iron-icon"><iron-icon icon="mdi:email-outline"></iron-icon></span><a href="https://informeddelivery.usps.com/" title="Open the USPS Informed Delivery site" target="_blank">Mail: ${usps_mail}<a></li>
-           <li><span class="mail-iron-icon"><iron-icon icon="mdi:package-variant-closed"></iron-icon></span><a href="https://informeddelivery.usps.com/" title="Open the USPS Informed Delivery site" target="_blank">USPS: ${usps_packages}</a></li><br>
-        </ul>
-      </span>
-      
+
+    ${this._config.name
+    ? html`
+    <div class="title"> ${this._config.name} </div>
+    `
+    : ""}
+
+    <br>
+    <ul class="items space-between">
+    <li><span class="mail-iron-icon"><iron-icon icon="mdi:package-variant"></iron-icon>
+        </span>Today's Deliveries: ${packages_delivered}</li>
+    <li><span class="mail-iron-icon"><iron-icon icon="mdi:truck-delivery"></iron-icon>
+    </span>In Transit: ${packages_in_transit}<li>
+    </ul>
+    <p>${deliveries_message}</p>
+    <ul class="items space-evenly">
+        <li><span class="mail-iron-icon">
+                <iron-icon icon="mdi:package-variant-closed"></iron-icon>
+            </span><a href="https://wwwapps.ups.com/mcdp" title="Open the UPS MyChoice site" target="_blank"><span class="no-break">UPS: ${ups_packages}</span></a></li>
+        <li><span class="mail-iron-icon">
+                <iron-icon icon="mdi:package-variant-closed"></iron-icon>
+            </span><a href="https://www.fedex.com/apps/fedextracking" title="Open the Fedex site" target="_blank"><span class="no-break">Fedex: ${fedex_packages}</span></a></li>
+        <li><span class="mail-iron-icon">
+                <iron-icon icon="mdi:email-outline"></iron-icon>
+            </span><a href="https://informeddelivery.usps.com/" title="Open the USPS Informed Delivery site" target="_blank"><span class="no-break">Mail: ${usps_mail}</span></a></li>
+        <li><span class="mail-iron-icon">
+                <iron-icon icon="mdi:package-variant-closed"></iron-icon>
+            </span><a href="https://informeddelivery.usps.com/" title="Open the USPS Informed Delivery site" target="_blank"><span class="no-break">USPS: ${usps_packages}</span></a></li>
+    </ul>
     </div>
-          </div>
-      
-      
-      
     `;
     }
 
@@ -192,12 +194,23 @@ class MailAndPackagesCard extends LitElement {
         }
         .details {
           margin-bottom: .5em;
-          
         }
-        .details ui {
-            display: flex;
-          justify-content: space-between;
-          }
+        
+        .items {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+                  }
+        .no-break {
+            white-space: nowrap;
+            }
+        .space-evenly {
+            justify-content: space-evenly;
+            }
+        .space-between {
+            justify-content: space-between;
+            }
         .mail-clear {
         clear:both;
       }
@@ -213,18 +226,6 @@ class MailAndPackagesCard extends LitElement {
         height: 18px;
         padding-right: 5px;
         color: var(--paper-item-icon-color);
-      }
-      .mail-variations {
-        font-weight:300;
-        color: var(--primary-text-color);
-        list-style:none;
-        margin-left:-2em;
-        margin-top: 1em;
-      }
-      .mail-variations.right {
-        float: right;
-        margin-left: 0;
-        margin-right: 1em;
       }
       .MailImg {
         position: relative;
