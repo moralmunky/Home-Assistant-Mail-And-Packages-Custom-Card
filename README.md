@@ -1,6 +1,8 @@
 # Home-Assistant-Mail-And-Packages-Custom-Card
 A Custom Lovelace card to pull together the mail and packages sensors.
 
+![Card screenshot](/card-image.png "Card screenshot")
+
 ## Lovelace GUI Setup
 
 Add the js path relative to the /local/ folder in your home assistant enviroment to the resources section of the lovelace yaml or at the top of the GUI lovelace RAW configuration editor.
