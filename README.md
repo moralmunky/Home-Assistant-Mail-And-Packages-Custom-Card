@@ -3,62 +3,41 @@ A Custom Lovelace card to pull together the mail and packages sensors.
 
 ## Lovelace GUI Setup
 
-Add the js path relative to the /local/ path to the resources section of the lovelace yaml or at the top of the GUI lovelace RAW configuration editor.
+Add the js path relative to the /local/ folder in your home assistant enviroment to the resources section of the lovelace yaml or at the top of the GUI lovelace RAW configuration editor.
 ```
 resources:
-  - type: js
-    url: /local/mail_and_packages/mail_and_packages.js?v=.01
+  - type: module
+    url: /local/Home-Assistant-Mail-And-Packages-Custom-Card/mail-and-packages-card.js
 ```
-Add the card configuration to the cards: section of the view you want to display the card in.
+Add the card configuration to the cards: section of the view you want the card to be in.
+
+Minimal Setup:
+The remaining sensors can be added in the card configurator.
 ```
-  - type: 'custom:mail-and-packages'
-    deliver_today: sensor.mail_deliveries_today
-    fedex: sensor.mail_fedex_packages
-    in_transit: sensor.mail_packages_in_transit
-    last_update: sensor.mail_updated
-    mail: sensor.mail_usps_mail
-    summary: sensor.mail_deliveries_message
-    ups: sensor.mail_ups_packages
-    usps: sensor.mail_usps_packages
+      - type: 'custom:mail-and-packages-card'
+        name: Mail Summary
+        updated: sensor.mail_updated
+        details: true
+        image: true
+        gif: /local/mail_and_packages/mail_today.gif
+
 ```
 
-## Template
-Use the following to create a deliveries summary sensor:
+Full Setup:
+
 ```
-- platform: template
-  sensors:
-    mail_deliveries_message:
-      friendly_name: "Deliveries Summary"
-      entity_id: 
-        - sensor.mail_usps_mail
-        - sensor.packages_in_transit
-      value_template: > 
-        {# Deliveries Sentence #}
-          {% macro deliveries_sentence() -%}
-                {%- if states("sensor.mail_usps_mail")|int == 0 -%}
-                  No
-                {%- else -%}
-                  {{states("sensor.mail_usps_mail")|int}}
-                {%- endif -%}
-              {{' '}} 
-                {%- if states("sensor.mail_usps_mail")|int <= 1 -%}
-                  mail
-                {%- else -%}
-                  pieces of mail
-                {%- endif -%}
-              {{' '}}will be delivered.{{' '}} 
-                {%- if states("sensor.packages_in_transit")|int == 0 -%}
-                  No
-                {%- else -%}
-                  {{states("sensor.packages_in_transit")|int}}
-                {%- endif -%}
-              {{' '}} 
-                {%- if states("sensor.packages_in_transit")|int == 1 -%}
-                  package is
-                {%- else -%}
-                  packages are
-                {%- endif -%}
-              {{' '}}in transit.{{' '}}
-          {%- endmacro %}
-        {{deliveries_sentence()}}
-```      
+      - type: 'custom:mail-and-packages-card'
+        name: Mail Summary
+        updated: sensor.mail_updated
+        details: true
+        image: true
+        gif: /local/mail_and_packages/mail_today.gif
+        deliveries_message: sensor.mail_deliveries_message
+        fedex_packages: sensor.mail_fedex_packages
+        packages_delivered: sensor.mail_packages_delivered
+        packages_in_transit: sensor.mail_packages_in_transit
+        ups_packages: sensor.mail_ups_packages
+        uspsMail: sensor.mail_usps_mail
+        usps_mail: sensor.mail_usps_mail
+        usps_packages: sensor.mail_ups_packages
+```
