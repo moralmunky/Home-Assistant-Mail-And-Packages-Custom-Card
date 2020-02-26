@@ -23,15 +23,6 @@ function hasConfigOrEntityChanged(element, changedProps) {
         return true;
     }
 
-    const oldHass = changedProps.get("hass");
-    if (oldHass) {
-        return (
-            oldHass.states[element._config.entity] !==
-            element.hass.states[element._config.entity] ||
-            oldHass.states["sun.sun"] !== element.hass.states["sun.sun"]
-        );
-    }
-
     return true;
 }
 
@@ -160,7 +151,7 @@ class MailAndPackagesCard extends LitElement {
 
     _handleClick() {
         fireEvent(this, "hass-more-info", {
-            entityId: this._config.entity
+            entityId: this._config.updated
         });
     }
 
