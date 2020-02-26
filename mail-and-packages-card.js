@@ -45,7 +45,7 @@ class MailAndPackagesCard extends LitElement {
 
     setConfig(config) {
         if (!config.updated) {
-            throw new Error("Please define a mail entity");
+            throw new Error("The sensor sensor.mail_updated is not found or not defined in lovelace.");
         }
         this._config = config;
     }
@@ -91,6 +91,7 @@ class MailAndPackagesCard extends LitElement {
     }
 
     renderDetails(stateObj) {
+/*
         const deliveries_message = this.hass.states[this._config.deliveries_message].state;
         const packages_delivered = this.hass.states[this._config.packages_delivered].state;
         const packages_in_transit = this.hass.states[this._config.packages_in_transit].state;
@@ -98,6 +99,14 @@ class MailAndPackagesCard extends LitElement {
         const ups_packages = this.hass.states[this._config.ups_packages].state;
         const usps_packages = this.hass.states[this._config.usps_packages].state;
         const usps_mail = this.hass.states[this._config.usps_mail].state;
+*/                
+        const deliveries_message = this._config.deliveries_message ? this.hass.states[this._config.deliveries_message].state : false;
+        const packages_delivered = this._config.packages_delivered ? this.hass.states[this._config.packages_delivered].state : false;
+        const packages_in_transit = this._config.packages_in_transit ? this.hass.states[this._config.packages_in_transit].state : false;
+        const fedex_packages = this._config.fedex_packages ? this.hass.states[this._config.fedex_packages].state : false;
+        const ups_packages = this._config.ups_packages ? this.hass.states[this._config.ups_packages].state : false;
+        const usps_packages = this._config.usps_packages ? this.hass.states[this._config.usps_packages].state : false;
+        const usps_mail = this._config.usps_mail ? this.hass.states[this._config.usps_mail].state : false;
 
         this.numberElements++;
 
@@ -112,25 +121,53 @@ class MailAndPackagesCard extends LitElement {
 
     <br>
     <ul class="items space-between">
+    ${packages_delivered
+    ? html`
     <li><span class="mail-iron-icon"><iron-icon icon="mdi:package-variant"></iron-icon>
-        </span>Today's Deliveries: ${packages_delivered}</li>
+        </span>Deliveries: ${packages_delivered}</li>
+    `
+    : ""}
+    ${packages_in_transit
+    ? html`
     <li><span class="mail-iron-icon"><iron-icon icon="mdi:truck-delivery"></iron-icon>
     </span>In Transit: ${packages_in_transit}<li>
+    `
+    : ""}
     </ul>
+    ${deliveries_message
+    ? html`
     <p>${deliveries_message}</p>
+    `
+    : ""}
     <ul class="items space-evenly">
+    ${ups_packages
+    ? html`
         <li><span class="mail-iron-icon">
                 <iron-icon icon="mdi:package-variant-closed"></iron-icon>
             </span><a href="https://wwwapps.ups.com/mcdp" title="Open the UPS MyChoice site" target="_blank"><span class="no-break">UPS: ${ups_packages}</span></a></li>
+        `
+        : ""}
+        ${fedex_packages
+        ? html`
         <li><span class="mail-iron-icon">
                 <iron-icon icon="mdi:package-variant-closed"></iron-icon>
             </span><a href="https://www.fedex.com/apps/fedextracking" title="Open the Fedex site" target="_blank"><span class="no-break">Fedex: ${fedex_packages}</span></a></li>
-        <li><span class="mail-iron-icon">
+            `
+            : ""}
+        ${usps_mail
+            ? html`
+            <li><span class="mail-iron-icon">
                 <iron-icon icon="mdi:email-outline"></iron-icon>
             </span><a href="https://informeddelivery.usps.com/" title="Open the USPS Informed Delivery site" target="_blank"><span class="no-break">Mail: ${usps_mail}</span></a></li>
+            `
+            : ""}
+        ${usps_packages
+        ? html`
         <li><span class="mail-iron-icon">
                 <iron-icon icon="mdi:package-variant-closed"></iron-icon>
             </span><a href="https://informeddelivery.usps.com/" title="Open the USPS Informed Delivery site" target="_blank"><span class="no-break">USPS: ${usps_packages}</span></a></li>
+            `
+            : ""}
     </ul>
     </div>
     `;
