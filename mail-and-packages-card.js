@@ -85,6 +85,7 @@ class MailAndPackagesCard extends LitElement {
       <ha-card @click="${this._handleClick}">
         ${this._config.details !== false ? this.renderDetails(stateObj) : ""}
         ${this._config.image !== false ? this.renderImage(stateObj) : ""}
+        ${this._config.camera !== false ? this.renderCamera(stateObj) : ""}
         <span class="usps_update">Checked: ${stateObj.state}</span>
       </ha-card>
     `;
@@ -174,7 +175,8 @@ class MailAndPackagesCard extends LitElement {
     }
 
     renderImage(image) {
-        if (!image || image.length === 0) {
+        const gif = this._config.gif;
+        if (!image || image.length < 2 || !gif || gif.length < 2 ) {
             return html ``;
         }
 
@@ -183,6 +185,23 @@ class MailAndPackagesCard extends LitElement {
         this.numberElements++;
         return html `
       <img class="MailImg clear" src="${this._config.gif + "?v=" + datetime}" />
+    `;
+    }
+    
+    renderCamera(camera) {
+        const camera_entity = this._config.camera_entity;     
+        if (!camera || camera.length === 0 || !camera_entity || camera_entity.length === 0) {
+            return html ``;
+        }
+        
+        const cameraObjt = this._config.camera_entity in this.hass.states ? this.hass.states[this._config.camera_entity] : null;
+        const camera_url = this.hass.states[this._config.camera_entity].attributes.entity_picture;
+
+        const lang = this.hass.selectedLanguage || this.hass.language;
+
+        this.numberElements++;
+        return html `
+        <img class="MailImg clear" src="${camera_url}&interval=30" />
     `;
     }
 
@@ -267,5 +286,6 @@ class MailAndPackagesCard extends LitElement {
       </style>
     `;
     }
+    
 }
 customElements.define("mail-and-packages-card", MailAndPackagesCard);
