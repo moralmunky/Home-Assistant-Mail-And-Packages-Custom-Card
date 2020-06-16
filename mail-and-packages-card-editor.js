@@ -37,45 +37,53 @@ export class MailAndPackagesCardEditor extends LitElement {
     get _name() {
         return this._config.name || "";
     }
-    
+
     get _updated() {
         return this._config.updated || "";
     }
-    
+
     get _deliveries_message() {
-    return this._config.deliveries_message || "";
+        return this._config.deliveries_message || "";
     }
-    
+
     get _packages_delivered() {
-    return this._config.packages_delivered || "";
+        return this._config.packages_delivered || "";
     }
-    
+
     get _packages_in_transit() {
-    return this._config.packages_in_transit || "";
+        return this._config.packages_in_transit || "";
     }
-    
+
     get _fedex_packages() {
-    return this._config.fedex_packages || "";
+        return this._config.fedex_packages || "";
     }
-    
+
     get _ups_packages() {
-    return this._config.ups_packages || "";
+        return this._config.ups_packages || "";
     }
-    
+
     get _usps_packages() {
-    return this._config.usps_packages || "";
+        return this._config.usps_packages || "";
     }
-    
+
     get _usps_mail() {
-    return this._config.usps_mail || "";
+        return this._config.usps_mail || "";
     }
 
     get _gif() {
         return this._config.gif || "";
     }
 
+    get _camera_entity() {
+        return this._config.camera_entity || "";
+    }
+
     get _image() {
         return this._config.image !== false;
+    }
+
+    get _camera() {
+        return this._config.camera !== false;
     }
 
     get _details() {
@@ -90,6 +98,10 @@ export class MailAndPackagesCardEditor extends LitElement {
         const entities = Object.keys(this.hass.states).filter(
             (eid) => eid.substr(0, eid.indexOf(".")) === "sensor"
         );
+        
+        const camera_entities = Object.keys(this.hass.states).filter(
+            (eid) => eid.substr(0, eid.indexOf(".")) === "camera"
+        );
 
         return html `
       <div class="card-config">
@@ -100,12 +112,11 @@ export class MailAndPackagesCardEditor extends LitElement {
             .configValue="${"name"}"
             @value-changed="${this._valueChanged}"
           ></paper-input>
-          <paper-input
-            label="Mail GIF location"
-            .value="${this._gif}"
-            .configValue="${"gif"}"
-            @value-changed="${this._valueChanged}"
-          ></paper-input>
+            <ha-switch
+            .checked=${this._details}
+            .configValue="${"details"}"
+            @change="${this._valueChanged}"
+            >Show Details</ha-switch>
           ${customElements.get("ha-entity-picker")
             ? html`
                 <ha-entity-picker
@@ -339,16 +350,52 @@ export class MailAndPackagesCardEditor extends LitElement {
                 </paper-dropdown-menu>
               `}
           <ha-switch
-            .checked=${this._details}
-            .configValue="${"details"}"
-            @change="${this._valueChanged}"
-            >Show Details</ha-switch
-          ><ha-switch
             .checked=${this._image}
             .configValue="${"image"}"
             @change="${this._valueChanged}"
             >Show Image</ha-switch
+          ><paper-input
+            label="Mail GIF location"
+            .value="${this._gif}"
+            .configValue="${"gif"}"
+            @value-changed="${this._valueChanged}"
+          ></paper-input>
+        <ha-switch
+            .checked=${this._camera}
+            .configValue="${"camera"}"
+            @change="${this._valueChanged}"
+            >Show Camera</ha-switch
           >
+
+        ${customElements.get("ha-entity-picker")
+            ? html`
+                <ha-entity-picker
+                  .hass="${this.hass}"
+                  .value="${this._camera_entity}"
+                  .configValue=${"camera_entity"}
+                  domain-filter="camera"
+                  @change="${this._valueChanged}"
+                  allow-custom-entity
+                ></ha-entity-picker>
+              `
+            : html`
+                <paper-dropdown-menu
+                  label="Camera Entity"
+                  @value-changed="${this._valueChanged}"
+                  .configValue="${"camera_entity"}"
+                >
+                  <paper-listbox
+                    slot="dropdown-content"
+                    .selected="${camera_entities.indexOf(this._camera_entity)}"
+                  >
+                    ${camera_entities.map((camera_entity) => {
+                      return html`
+                        <paper-item>${camera_entity}</paper-item>
+                      `;
+                    })}
+                  </paper-listbox>
+                </paper-dropdown-menu>
+              `}
         </div>
       </div>
     `;
