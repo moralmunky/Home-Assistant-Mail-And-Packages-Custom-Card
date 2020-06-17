@@ -124,14 +124,14 @@ class MailAndPackagesCard extends LitElement {
     <ul class="items space-between">
     ${packages_delivered
     ? html`
-    <li><span class="mail-iron-icon"><iron-icon icon="mdi:package-variant"></iron-icon>
+    <li><span class="mail-ha-icon"><ha-icon icon="mdi:package-variant"></iron-icon>
         </span>Deliveries: ${packages_delivered}</li>
     `
     : ""}
     ${packages_in_transit
     ? html`
-    <li><span class="mail-iron-icon"><iron-icon icon="mdi:truck-delivery"></iron-icon>
-    </span>In Transit: ${packages_in_transit}<li>
+    <li><span class="mail-ha-icon"><ha-icon icon="mdi:truck-delivery"></iron-icon>
+    </span>In Transit: ${packages_in_transit}</li>
     `
     : ""}
     </ul>
@@ -143,29 +143,29 @@ class MailAndPackagesCard extends LitElement {
     <ul class="items space-evenly">
     ${ups_packages
     ? html`
-        <li><span class="mail-iron-icon">
-                <iron-icon icon="mdi:package-variant-closed"></iron-icon>
+        <li><span class="mail-ha-icon">
+                <ha-icon icon="mdi:package-variant-closed"></iron-icon>
             </span><a href="https://wwwapps.ups.com/mcdp" title="Open the UPS MyChoice site" target="_blank"><span class="no-break">UPS: ${ups_packages}</span></a></li>
         `
         : ""}
         ${fedex_packages
         ? html`
-        <li><span class="mail-iron-icon">
-                <iron-icon icon="mdi:package-variant-closed"></iron-icon>
+        <li><span class="mail-ha-icon">
+                <ha-icon icon="mdi:package-variant-closed"></iron-icon>
             </span><a href="https://www.fedex.com/apps/fedextracking" title="Open the Fedex site" target="_blank"><span class="no-break">Fedex: ${fedex_packages}</span></a></li>
             `
             : ""}
         ${usps_mail
             ? html`
-            <li><span class="mail-iron-icon">
-                <iron-icon icon="mdi:email-outline"></iron-icon>
+            <li><span class="mail-ha-icon">
+                <ha-icon icon="mdi:email-outline"></iron-icon>
             </span><a href="https://informeddelivery.usps.com/" title="Open the USPS Informed Delivery site" target="_blank"><span class="no-break">Mail: ${usps_mail}</span></a></li>
             `
             : ""}
         ${usps_packages
         ? html`
-        <li><span class="mail-iron-icon">
-                <iron-icon icon="mdi:package-variant-closed"></iron-icon>
+        <li><span class="mail-ha-icon">
+                <ha-icon icon="mdi:package-variant-closed"></iron-icon>
             </span><a href="https://informeddelivery.usps.com/" title="Open the USPS Informed Delivery site" target="_blank"><span class="no-break">USPS: ${usps_packages}</span></a></li>
             `
             : ""}
@@ -218,13 +218,17 @@ class MailAndPackagesCard extends LitElement {
     renderStyle() {
         return html `
       <style>
+        a {
+          color: var(--secondary-text-color)
+        }
+
         ha-card {
           cursor: pointer;
           margin: auto;
           padding: 1em;
           position: relative;
         }
-
+        
         .spacer {
           padding-top: 1em;
         }
@@ -256,7 +260,7 @@ class MailAndPackagesCard extends LitElement {
             justify-content: space-evenly;
             }
         .space-between {
-            justify-content: space-between;
+            justify-content: space-around;
             }
         .mail-clear {
         clear:both;
@@ -269,7 +273,7 @@ class MailAndPackagesCard extends LitElement {
         padding-right:2em;
         position: relative;
       }
-      .mail-iron-icon {
+      .mail-ha-icon {
         height: 18px;
         padding-right: 5px;
         color: var(--paper-item-icon-color);
