@@ -92,15 +92,6 @@ class MailAndPackagesCard extends LitElement {
     }
 
     renderDetails(stateObj) {
-/*
-        const deliveries_message = this.hass.states[this._config.deliveries_message].state;
-        const packages_delivered = this.hass.states[this._config.packages_delivered].state;
-        const packages_in_transit = this.hass.states[this._config.packages_in_transit].state;
-        const fedex_packages = this.hass.states[this._config.fedex_packages].state;
-        const ups_packages = this.hass.states[this._config.ups_packages].state;
-        const usps_packages = this.hass.states[this._config.usps_packages].state;
-        const usps_mail = this.hass.states[this._config.usps_mail].state;
-*/                
         const deliveries_message = this._config.deliveries_message ? this.hass.states[this._config.deliveries_message].state : false;
         const packages_delivered = this._config.packages_delivered ? this.hass.states[this._config.packages_delivered].state : false;
         const packages_in_transit = this._config.packages_in_transit ? this.hass.states[this._config.packages_in_transit].state : false;
@@ -108,7 +99,12 @@ class MailAndPackagesCard extends LitElement {
         const ups_packages = this._config.ups_packages ? this.hass.states[this._config.ups_packages].state : false;
         const usps_packages = this._config.usps_packages ? this.hass.states[this._config.usps_packages].state : false;
         const usps_mail = this._config.usps_mail ? this.hass.states[this._config.usps_mail].state : false;
-
+        
+        const mail_icon = usps_mail > 0 ? 'mailbox-open-up' : 'mailbox-outline';
+        const usps_icon = usps_packages > 0 ? 'package-variant' : 'package-variant-closed';
+        const ups_icon = ups_packages > 0 ? 'package-variant' : 'package-variant-closed';
+        const fedex_icon = fedex_packages > 0 ? 'package-variant' : 'package-variant-closed';
+ 
         this.numberElements++;
 
         return html `
@@ -121,16 +117,16 @@ class MailAndPackagesCard extends LitElement {
     : ""}
 
     <br>
-    <ul class="items space-between">
+    <ul class="items space-evenly">
     ${packages_delivered
     ? html`
-    <li><span class="mail-iron-icon"><iron-icon icon="mdi:package-variant"></iron-icon>
+    <li><span class="mail-ha-icon"><ha-icon icon="mdi:package"></ha-icon>
         </span>Deliveries: ${packages_delivered}</li>
     `
     : ""}
     ${packages_in_transit
     ? html`
-    <li><span class="mail-iron-icon"><iron-icon icon="mdi:truck-delivery"></iron-icon>
+    <li><span class="mail-ha-icon"><ha-icon icon="mdi:truck-delivery"></ha-icon>
     </span>In Transit: ${packages_in_transit}<li>
     `
     : ""}
@@ -141,32 +137,32 @@ class MailAndPackagesCard extends LitElement {
     `
     : ""}
     <ul class="items space-evenly">
+    ${usps_mail
+        ? html`
+        <li><span class="mail-ha-icon">
+        <ha-icon icon="mdi:${mail_icon}"></ha-icon>
+        </span><a href="https://informeddelivery.usps.com/" title="Open the USPS Informed Delivery site" target="_blank"><span class="no-break">Mail: ${usps_mail}</span></a></li>
+            `
+            : ""}
+    ${usps_packages
+        ? html`
+        <li><span class="mail-ha-icon">
+                <ha-icon icon="mdi:${usps_icon}"></ha-icon>
+            </span><a href="https://informeddelivery.usps.com/" title="Open the USPS Informed Delivery site" target="_blank"><span class="no-break">USPS: ${usps_packages}</span></a></li>
+            `
+            : ""}
     ${ups_packages
     ? html`
-        <li><span class="mail-iron-icon">
-                <iron-icon icon="mdi:package-variant-closed"></iron-icon>
+        <li><span class="mail-ha-icon">
+                <ha-icon icon="mdi:${ups_icon}"></ha-icon>
             </span><a href="https://wwwapps.ups.com/mcdp" title="Open the UPS MyChoice site" target="_blank"><span class="no-break">UPS: ${ups_packages}</span></a></li>
         `
         : ""}
         ${fedex_packages
         ? html`
-        <li><span class="mail-iron-icon">
-                <iron-icon icon="mdi:package-variant-closed"></iron-icon>
+        <li><span class="mail-ha-icon">
+                <ha-icon icon="mdi:${fedex_icon}"></ha-icon>
             </span><a href="https://www.fedex.com/apps/fedextracking" title="Open the Fedex site" target="_blank"><span class="no-break">Fedex: ${fedex_packages}</span></a></li>
-            `
-            : ""}
-        ${usps_mail
-            ? html`
-            <li><span class="mail-iron-icon">
-                <iron-icon icon="mdi:email-outline"></iron-icon>
-            </span><a href="https://informeddelivery.usps.com/" title="Open the USPS Informed Delivery site" target="_blank"><span class="no-break">Mail: ${usps_mail}</span></a></li>
-            `
-            : ""}
-        ${usps_packages
-        ? html`
-        <li><span class="mail-iron-icon">
-                <iron-icon icon="mdi:package-variant-closed"></iron-icon>
-            </span><a href="https://informeddelivery.usps.com/" title="Open the USPS Informed Delivery site" target="_blank"><span class="no-break">USPS: ${usps_packages}</span></a></li>
             `
             : ""}
     </ul>
@@ -176,7 +172,7 @@ class MailAndPackagesCard extends LitElement {
 
     renderImage(image) {
         const gif = this._config.gif;
-        if (!image || image.length < 2 || !gif || gif.length < 2 ) {
+        if (!image || image.length < 2 || !gif || gif.length < 2) {
             return html ``;
         }
 
@@ -187,13 +183,13 @@ class MailAndPackagesCard extends LitElement {
       <img class="MailImg clear" src="${this._config.gif + "?v=" + datetime}" />
     `;
     }
-    
+
     renderCamera(camera) {
-        const camera_entity = this._config.camera_entity;     
+        const camera_entity = this._config.camera_entity;
         if (!camera || camera.length === 0 || !camera_entity || camera_entity.length === 0) {
             return html ``;
         }
-        
+
         const cameraObjt = this._config.camera_entity in this.hass.states ? this.hass.states[this._config.camera_entity] : null;
         const camera_url = this.hass.states[this._config.camera_entity].attributes.entity_picture;
 
@@ -217,75 +213,88 @@ class MailAndPackagesCard extends LitElement {
 
     renderStyle() {
         return html `
-      <style>
-        ha-card {
-          cursor: pointer;
-          margin: auto;
-          padding: 1em;
-          position: relative;
-        }
+            <style>
+                ha-card {
+                    cursor: pointer;
+                    margin: auto;
+                    padding: 1em;
+                    position: relative;
+                }
 
-        .spacer {
-          padding-top: 1em;
-        }
+                a {
+                    color: var(--secondary-text-color)
+                }
 
-        .clear {
-          clear: both;
-        }
+                .spacer {
+                    padding-top: 1em;
+                }
 
-        .title {
-          position: relative;
-          font-weight: 300;
-          font-size: 2em;
-          color: var(--primary-text-color);
-        }
-        .details {
-          margin-bottom: .5em;
-        }
-        
-        .items {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        display: flex;
-                  }
-        .no-break {
-            white-space: nowrap;
-            }
-        .space-evenly {
-            justify-content: space-evenly;
-            }
-        .space-between {
-            justify-content: space-between;
-            }
-        .mail-clear {
-        clear:both;
-      }
-      .mail-and-packages {
-        margin: auto;
-        padding-top: 2em;
-        padding-bottom: 2em;
-        padding-left: 2em;
-        padding-right:2em;
-        position: relative;
-      }
-      .mail-iron-icon {
-        height: 18px;
-        padding-right: 5px;
-        color: var(--paper-item-icon-color);
-      }
-      .MailImg {
-        position: relative;
-        width: 100%;
-        height: auto;
-        margin-top: 1em;
-      }
-      .usps_update {
-	      font-size: .7em;
-      }
-      </style>
+                .clear {
+                    clear: both;
+                }
+
+                .title {
+                    position: relative;
+                    font-weight: 300;
+                    font-size: 2em;
+                    color: var(--primary-text-color);
+                }
+
+                .details {
+                    margin-bottom: .5em;
+                }
+
+                .items {
+                    list-style: none;
+                    padding: 0;
+                    margin: 0;
+                    display: flex;
+                }
+
+                .no-break {
+                    white-space: nowrap;
+                }
+
+                .space-evenly {
+                    justify-content: space-evenly;
+                }
+
+                .space-between {
+                    justify-content: space-between;
+                }
+
+                .mail-clear {
+                    clear: both;
+                }
+
+                .mail-and-packages {
+                    margin: auto;
+                    padding-top: 2em;
+                    padding-bottom: 2em;
+                    padding-left: 2em;
+                    padding-right: 2em;
+                    position: relative;
+                }
+
+                .mail-ha-icon {
+                    height: 18px;
+                    padding-right: 5px;
+                    color: var(--paper-item-icon-color);
+                }
+
+                .MailImg {
+                    position: relative;
+                    width: 100%;
+                    height: auto;
+                    margin-top: 1em;
+                }
+
+                .usps_update {
+                    font-size: .7em;
+                }
+        </style>
     `;
     }
-    
+
 }
 customElements.define("mail-and-packages-card", MailAndPackagesCard);
