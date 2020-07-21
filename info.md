@@ -22,3 +22,5 @@ The remaining sensors can be added in the card configurator.
   details: true
   image: false
 ```
+
+You may need to refresh the page or empty the browser cache
