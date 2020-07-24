@@ -1,9 +1,15 @@
 # Home-Assistant-Mail-And-Packages-Custom-Card
 A Custom Lovelace card to pull together the mail and packages sensors.
 
-![Card screenshot](/card-image.png "Card screenshot")
+<img src="https://github.com/moralmunky/Home-Assistant-Mail-And-Packages-Custom-Card/blob/master/card-image.png?raw=true" alt="Preview of card" />
 
 ## Lovelace GUI Setup
+
+Bothh JS files need to be stored inside the path/to/config/www/ folder. In the Lovelace reource URL path, local is the same as the www folder. Construct your path to the JS inside the www folder for the resurce URL. For the example below:
+
+path/to/config/www/Home-Assistant-Mail-And-Packages-Custom-Card/Home-Assistant-Mail-And-Packages-Custom-Card.js
+
+path/to/config/www/Home-Assistant-Mail-And-Packages-Custom-Card/Home-Assistant-Mail-And-Packages-Custom-Card-editor.js
 
 Configuration > Lovelace Dashboards > Resources
 
@@ -22,5 +28,3 @@ The remaining sensors can be added in the card configurator.
   details: true
   image: false
 ```
-
-You may need to refresh the page or empty the browser cache
