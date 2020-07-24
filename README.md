@@ -2,6 +2,7 @@
 A Custom Lovelace card to pull together the mail and packages sensors.
 
 ![Card screenshot](/card-image.png "Card screenshot")
+<img src="https://github.com/moralmunky/Home-Assistant-Mail-And-Packages-Custom-Card/blob/master/card-image.png?raw=true" alt="Preview of card" />
 
 ## Lovelace GUI Setup
 
