@@ -14,7 +14,7 @@ path/to/config/www/Home-Assistant-Mail-And-Packages-Custom-Card/Home-Assistant-M
 Configuration > Lovelace Dashboards > Resources
 
 ```
-url: /local/Home-Assistant-Mail-And-Packages-Custom-Card/mail-and-packages-card.js
+url: /local/Home-Assistant-Mail-And-Packages-Custom-Card/Home-Assistant-Mail-And-Packages-Custom-Card.js
 type: Javascript Module
 ```
 Add the card configuration to the cards: section of the view you want the card to be in.
