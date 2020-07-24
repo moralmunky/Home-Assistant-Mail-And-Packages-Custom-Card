@@ -35,7 +35,7 @@ class MailAndPackagesCard extends LitElement {
     }
 
     static async getConfigElement() {
-        await import("./mail-and-packages-card-editor.js");
+        await import("./Home-Assistant-Mail-And-Packages-Custom-Card-editor.js");
         return document.createElement("mail-and-packages-card-editor");
     }
 
