@@ -33,8 +33,8 @@ Path HACS adds to Lovelace resources
 ## Card Configuration
 Add the card configuration to the cards: section of the view you want the card to be in.
 
-Minimal Setup:
-The remaining sensors can be added in the card configurator.
+Visual Editor Minimal Setup:
+Add a manual card then input the yaml below. The remaining sensors can be added in the visual editor.
 ```
 type: 'custom:mail-and-packages-card'
 name: Mail Summary
