@@ -1,7 +1,7 @@
 # Home-Assistant-Mail-And-Packages-Custom-Card
 A Custom Lovelace card to pull together the mail and packages sensors.
 
-<img src="https://github.com/moralmunky/Home-Assistant-Mail-And-Packages-Custom-Card/blob/master/card-image.png?raw=true" alt="Preview of card" />
+<img src="https://github.com/moralmunky/Home-Assistant-Mail-And-Packages-Custom-Card/blob/master/img/card-image.png?raw=true" alt="Preview of card" />
 
 ## Lovelace GUI Setup
 
@@ -44,3 +44,5 @@ updated: sensor.mail_updated
 details: true
 image: false
 ```
+Switch to the visual editor and complete the setup by assigning the sensors you have enabled in the [Mail and Packages integration](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages).
+<img src="https://github.com/moralmunky/Home-Assistant-Mail-And-Packages-Custom-Card/blob/master/img/visual-editor.png?raw=true" alt="Preview of visual-editor" />
