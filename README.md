@@ -32,6 +32,8 @@ Path HACS adds to Lovelace resources
 /hacsfiles/Home-Assistant-Mail-And-Packages-Custom-Card/Home-Assistant-Mail-And-Packages-Custom-Card.js
 ```
 
+*You may need to empty your browser cache for the front end to pull the new ha files.
+
 ## Card Configuration
 Add the card configuration to the cards: section of the view you want the card to be in.
 
