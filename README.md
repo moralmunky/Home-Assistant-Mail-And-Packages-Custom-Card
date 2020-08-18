@@ -23,7 +23,7 @@ type: Javascript Module
 
 [HACS](https://hacs.xyz) will install the files and add an entry in the Lovelace resource
 * Have [HACS](https://hacs.xyz) installed in your instance of HASS
-* Add URL: **https://github.com/moralmunky/Home-Assistant-Mail-And-Packages-Custom-Card/** as a custom repository with Type: **LOVELACE**
+* Add URL: **https://github.com/moralmunky/Home-Assistant-Mail-And-Packages-Custom-Card** as a custom repository with Type: **LOVELACE**
 * Navigate to the Frontend directory
 * Search for Mail and Packages, then choose install
 * You may need to empty your browser cache for the frontend to recognize the new files.
