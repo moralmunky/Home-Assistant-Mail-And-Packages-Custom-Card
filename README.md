@@ -5,8 +5,8 @@ A Custom Lovelace card to pull together the mail and packages sensors.
 
 ## Lovelace GUI Setup
 
-##Manual Install
-Bothh JS files need to be stored inside the path/to/config/www/ folder. In the Lovelace reource URL path, local is the same as the www folder. Construct your path to the JS inside the www folder for the resurce URL. For the example below:
+## Manual Install
+Both JS files need to be stored inside the path/to/config/www/ folder. In the Lovelace reource URL path, local is the same as the www folder. Construct your path to the JS inside the www folder for the resurce URL. For the example below:
 ```
 path/to/config/www/Home-Assistant-Mail-And-Packages-Custom-Card/Home-Assistant-Mail-And-Packages-Custom-Card.js
 
@@ -21,7 +21,12 @@ type: Javascript Module
 
 ## HACS Install
 
-HACS will install the files and add an entry in the Lovelace resource
+[HACS](https://hacs.xyz) will install the files and add an entry in the Lovelace resource
+* Have [HACS](https://hacs.xyz) installed in your instance of HASS
+* Add URL: **https://github.com/moralmunky/Home-Assistant-Mail-And-Packages-Custom-Card/** as a custom repository with Type: **LOVELACE**
+* Navigate to the Frontend directory
+* Search for Mail and Packages, then choose install
+* You may need to empty your browser cache for the frontend to recognize the new files.
 
 HACS install path
 ```
@@ -31,8 +36,6 @@ Path HACS adds to Lovelace resources
 ```
 /hacsfiles/Home-Assistant-Mail-And-Packages-Custom-Card/Home-Assistant-Mail-And-Packages-Custom-Card.js
 ```
-
-*You may need to empty your browser cache for the front end to pull the new ha files.
 
 ## Card Configuration
 Add the card configuration to the cards: section of the view you want the card to be in.
