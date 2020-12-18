@@ -50,4 +50,9 @@ details: true
 image: false
 ```
 Switch to the visual editor and complete the setup by assigning the sensors you have enabled in the [Mail and Packages integration](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages).
+
+The mail_today.gif file must be saved in the www folder for the front end to load it. If the image is saved directly in the `www` folder you will use the path `/local/mail_today.gif`. 
+
+The [Mail and Packages Integration](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages/wiki/Configuration-and-Email-Settings#configuration) image path should be set to the `www` folder or subfolder of `www`. Random image file name setting should be turned off. Please see the [Mail and Packages Integration](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages/wiki/Configuration-and-Email-Settings#configuration) configuration section for the path the integariton should be set to based on the type of HASS instalattion you are using.
+
 <img src="https://github.com/moralmunky/Home-Assistant-Mail-And-Packages-Custom-Card/blob/master/img/visual-editor.png?raw=true" alt="Preview of visual-editor" />
