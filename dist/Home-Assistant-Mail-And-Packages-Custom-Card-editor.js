@@ -79,6 +79,10 @@ export class MailAndPackagesCardEditor extends LitElement {
     get _gif() {
         return this._config.gif || "";
     }
+    
+    get _gif_sensor() {
+        return this._config.gif_sensor || "";
+    }
 
     get _camera_entity() {
         return this._config.camera_entity || "";
@@ -404,6 +408,38 @@ export class MailAndPackagesCardEditor extends LitElement {
             .configValue="${"gif"}"
             @value-changed="${this._valueChanged}"
           ></paper-input>
+
+            ${customElements.get("ha-entity-picker")
+          ? html`
+              <ha-entity-picker
+                label="GIF Sensor"
+                  .hass="${this.hass}"
+                  .value="${this._gif_sensor}"
+                  .configValue=${"gif_sensor"}
+                  domain-filter="sensor"
+                  @change="${this._valueChanged}"
+                  allow-custom-entity
+                ></ha-entity-picker>
+              `
+            : html`
+                <paper-dropdown-menu
+                  label="GIF Sensor"
+                  @value-changed="${this._valueChanged}"
+                  .configValue="${"gif_sensor"}"
+                >
+                  <paper-listbox
+                    slot="dropdown-content"
+                    .selected="${entities.indexOf(this._gif_sensor)}"
+                  >
+                    ${entities.map((gif_sensor) => {
+                      return html`
+                        <paper-item>${gif_sensor}</paper-item>
+                      `;
+                    })}
+                  </paper-listbox>
+                </paper-dropdown-menu>
+              `}
+
         <ha-switch
             .checked=${this._camera}
             .configValue="${"camera"}"
