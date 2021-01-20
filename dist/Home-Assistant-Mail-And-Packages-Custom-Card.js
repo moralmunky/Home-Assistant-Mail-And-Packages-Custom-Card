@@ -131,7 +131,7 @@ class MailAndPackagesCard extends LitElement {
     ${packages_in_transit
     ? html`
     <li><span class="mail-ha-icon"><ha-icon icon="mdi:truck-delivery"></ha-icon>
-    </span>In Transit: ${packages_in_transit}<li>
+    </span>In Transit: ${packages_in_transit}</li>
     `
     : ""}
     </ul>
