@@ -18,9 +18,9 @@ if (
     customElements.define("ha-switch", customElements.get("paper-toggle-button"));
 }
 
-const LitElement = customElements.get("hui-masonry-view")
-  ? Object.getPrototypeOf(customElements.get("hui-masonry-view"))
-  : Object.getPrototypeOf(customElements.get("hui-view"));
+const LitElement = customElements.get("hui-masonry-view") ?
+    Object.getPrototypeOf(customElements.get("hui-masonry-view")) :
+    Object.getPrototypeOf(customElements.get("hui-view"));
 const html = LitElement.prototype.html;
 const css = LitElement.prototype.css;
 
@@ -68,18 +68,14 @@ export class MailAndPackagesCardEditor extends LitElement {
         return this._config.usps_packages || "";
     }
 
-  get _amazon_packages() {
-    return this._config.amazon_packages || "";
-  }
+    get _amazon_packages() {
+        return this._config.amazon_packages || "";
+    }
 
     get _usps_mail() {
         return this._config.usps_mail || "";
     }
 
-    get _gif() {
-        return this._config.gif || "";
-    }
-    
     get _gif_sensor() {
         return this._config.gif_sensor || "";
     }
@@ -108,7 +104,7 @@ export class MailAndPackagesCardEditor extends LitElement {
         const entities = Object.keys(this.hass.states).filter(
             (eid) => eid.substr(0, eid.indexOf(".")) === "sensor"
         );
-        
+
         const camera_entities = Object.keys(this.hass.states).filter(
             (eid) => eid.substr(0, eid.indexOf(".")) === "camera"
         );
@@ -402,13 +398,7 @@ export class MailAndPackagesCardEditor extends LitElement {
             .configValue="${"image"}"
             @change="${this._valueChanged}"
             >Show Image</ha-switch
-          ><paper-input
-            label="Mail GIF location"
-            .value="${this._gif}"
-            .configValue="${"gif"}"
-            @value-changed="${this._valueChanged}"
-          ></paper-input>
-
+          >
             ${customElements.get("ha-entity-picker")
           ? html`
               <ha-entity-picker

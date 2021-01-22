@@ -182,18 +182,16 @@ class MailAndPackagesCard extends LitElement {
     }
 
     renderImage(image) {
-        const gif = this._config.gif;
+        const gif = this._config.gif_sensor;
         if (!image || image.length < 2 || !gif || gif.length < 2) {
             return html ``;
         }
         
         const gif_sensor = this._config.gif_sensor ? this.hass.states[this._config.gif_sensor].state : false;
-
         const lang = this.hass.selectedLanguage || this.hass.language;
 
         this.numberElements++;
         return html `
-      <img class="MailImg clear" src="${this._config.gif + "?v=" + datetime}" />
       <img class="MailImg clear" src="${gif_sensor}" />
     `;
     }
