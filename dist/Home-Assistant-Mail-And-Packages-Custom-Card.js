@@ -140,38 +140,38 @@ class MailAndPackagesCard extends LitElement {
     <p>${deliveries_message}</p>
     `
     : ""}
-    <ul class="items space-evenly">
+    <ul class="items space-center">
     ${usps_mail
         ? html`
-        <li><span class="mail-ha-icon">
+        <li class="item"><span class="mail-ha-icon">
         <ha-icon icon="mdi:${mail_icon}"></ha-icon>
         </span><a href="https://informeddelivery.usps.com/" title="Open the USPS Informed Delivery site" target="_blank"><span class="no-break">Mail: ${usps_mail}</span></a></li>
             `
             : ""}
     ${usps_packages
         ? html`
-        <li><span class="mail-ha-icon">
+        <li class="item"><span class="mail-ha-icon">
                 <ha-icon icon="mdi:${usps_icon}"></ha-icon>
             </span><a href="https://informeddelivery.usps.com/" title="Open the USPS Informed Delivery site" target="_blank"><span class="no-break">USPS: ${usps_packages}</span></a></li>
             `
             : ""}
     ${ups_packages
     ? html`
-        <li><span class="mail-ha-icon">
+        <li class="item"><span class="mail-ha-icon">
                 <ha-icon icon="mdi:${ups_icon}"></ha-icon>
             </span><a href="https://wwwapps.ups.com/mcdp" title="Open the UPS MyChoice site" target="_blank"><span class="no-break">UPS: ${ups_packages}</span></a></li>
         `
         : ""}
         ${fedex_packages
         ? html`
-        <li><span class="mail-ha-icon">
+        <li class="item"><span class="mail-ha-icon">
                 <ha-icon icon="mdi:${fedex_icon}"></ha-icon>
             </span><a href="https://www.fedex.com/apps/fedextracking" title="Open the Fedex site" target="_blank"><span class="no-break">Fedex: ${fedex_packages}</span></a></li>
             `
             : ""}
     ${amazon_packages
     ? html`
-        <li><span class="mail-ha-icon">
+        <li class="item"><span class="mail-ha-icon">
                 <ha-icon icon="mdi:${amazon_icon}"></ha-icon>
             </span><a href="https://www.amazon.com/gp/css/order-history/" title="Open the Amazon site" target="_blank"><span class="no-break">Amazon: ${amazon_packages}</span></a></li>
             `
@@ -261,12 +261,19 @@ class MailAndPackagesCard extends LitElement {
                     padding: 0;
                     margin: 0;
                     display: flex;
+                    flex-wrap: wrap;
                 }
 
+                .item {
+                    flex: 0 1 30%;
+                    margin-bottom: .5rem;
+                }
                 .no-break {
                     white-space: nowrap;
                 }
-
+                .space-center {
+                    justify-content: center;
+                }
                 .space-evenly {
                     justify-content: space-evenly;
                 }
