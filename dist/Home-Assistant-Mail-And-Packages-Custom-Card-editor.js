@@ -111,6 +111,7 @@ export class MailAndPackagesCardEditor extends LitElement {
 
         return html `
       <div class="card-config">
+    Version: 0.06
         <div>
           <paper-input
             label="Name"
