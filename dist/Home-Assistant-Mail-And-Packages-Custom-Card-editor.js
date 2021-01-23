@@ -18,9 +18,9 @@ if (
     customElements.define("ha-switch", customElements.get("paper-toggle-button"));
 }
 
-const LitElement = customElements.get("hui-masonry-view")
-  ? Object.getPrototypeOf(customElements.get("hui-masonry-view"))
-  : Object.getPrototypeOf(customElements.get("hui-view"));
+const LitElement = customElements.get("hui-masonry-view") ?
+    Object.getPrototypeOf(customElements.get("hui-masonry-view")) :
+    Object.getPrototypeOf(customElements.get("hui-view"));
 const html = LitElement.prototype.html;
 const css = LitElement.prototype.css;
 
@@ -68,16 +68,16 @@ export class MailAndPackagesCardEditor extends LitElement {
         return this._config.usps_packages || "";
     }
 
-  get _amazon_packages() {
-    return this._config.amazon_packages || "";
-  }
+    get _amazon_packages() {
+        return this._config.amazon_packages || "";
+    }
 
     get _usps_mail() {
         return this._config.usps_mail || "";
     }
 
-    get _gif() {
-        return this._config.gif || "";
+    get _gif_sensor() {
+        return this._config.gif_sensor || "";
     }
 
     get _camera_entity() {
@@ -104,7 +104,7 @@ export class MailAndPackagesCardEditor extends LitElement {
         const entities = Object.keys(this.hass.states).filter(
             (eid) => eid.substr(0, eid.indexOf(".")) === "sensor"
         );
-        
+
         const camera_entities = Object.keys(this.hass.states).filter(
             (eid) => eid.substr(0, eid.indexOf(".")) === "camera"
         );
@@ -398,12 +398,38 @@ export class MailAndPackagesCardEditor extends LitElement {
             .configValue="${"image"}"
             @change="${this._valueChanged}"
             >Show Image</ha-switch
-          ><paper-input
-            label="Mail GIF location"
-            .value="${this._gif}"
-            .configValue="${"gif"}"
-            @value-changed="${this._valueChanged}"
-          ></paper-input>
+          >
+            ${customElements.get("ha-entity-picker")
+          ? html`
+              <ha-entity-picker
+                label="GIF Sensor"
+                  .hass="${this.hass}"
+                  .value="${this._gif_sensor}"
+                  .configValue=${"gif_sensor"}
+                  domain-filter="sensor"
+                  @change="${this._valueChanged}"
+                  allow-custom-entity
+                ></ha-entity-picker>
+              `
+            : html`
+                <paper-dropdown-menu
+                  label="GIF Sensor"
+                  @value-changed="${this._valueChanged}"
+                  .configValue="${"gif_sensor"}"
+                >
+                  <paper-listbox
+                    slot="dropdown-content"
+                    .selected="${entities.indexOf(this._gif_sensor)}"
+                  >
+                    ${entities.map((gif_sensor) => {
+                      return html`
+                        <paper-item>${gif_sensor}</paper-item>
+                      `;
+                    })}
+                  </paper-listbox>
+                </paper-dropdown-menu>
+              `}
+
         <ha-switch
             .checked=${this._camera}
             .configValue="${"camera"}"
