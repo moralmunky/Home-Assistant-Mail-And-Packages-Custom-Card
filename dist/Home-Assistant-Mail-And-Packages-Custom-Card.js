@@ -84,11 +84,11 @@ class MailAndPackagesCard extends LitElement {
 
         return html `
       ${this.renderStyle()}
-      <ha-card @click="${this._handleClick}">
+      <ha-card>
         ${this._config.details !== false ? this.renderDetails(stateObj) : ""}
         ${this._config.image !== false ? this.renderImage(stateObj) : ""}
         ${this._config.camera !== false ? this.renderCamera(stateObj) : ""}
-        <span class="usps_update">V 0.06 Checked: ${stateObj.state}</span>
+        <span class="usps_update">V 0.07 Checked: ${stateObj.state}</span>
       </ha-card>
     `;
     }
@@ -209,13 +209,13 @@ class MailAndPackagesCard extends LitElement {
 
         this.numberElements++;
         return html `
-        <img class="MailImg clear" src="${camera_url}&interval=30" />
+        <img  @click="${this._handleCameraClick}" class="MailImg clear" src="${camera_url}&interval=30" />
     `;
     }
 
-    _handleClick() {
+    _handleCameraClick() {
         fireEvent(this, "hass-more-info", {
-            entityId: this._config.updated
+            entityId: this._config.camera_entity
         });
     }
 
