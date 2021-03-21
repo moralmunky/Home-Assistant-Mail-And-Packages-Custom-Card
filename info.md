@@ -1,30 +1,59 @@
 # Home-Assistant-Mail-And-Packages-Custom-Card
-A Custom Lovelace card to pull together the mail and packages sensors.
 
-<img src="https://github.com/moralmunky/Home-Assistant-Mail-And-Packages-Custom-Card/blob/master/card-image.png?raw=true" alt="Preview of card" />
+{% if prerelease %}
+
+### This is a pre-release version
+
+It may contain bugs or break functionality in addition to adding new features and fixes. Please review open issues and submit new issues to the [GitHub issue tracker](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages-Custom-Card/issues).
+
+{% endif %}
+
+{% if installed %}
+
+## Changes as compared to the installed version:
+
+### Breaking Changes
+
+{% if version_installed.replace("v", "").replace(".","") | int < 08  %}
+This is a complete rewrite. Remove the current card from your dashabord and add a new card from the card picker.
+{% endif %}
+
+### Changes
+
+{% if version_installed.replace("v", "").replace(".","") | int < 08  %}
+
+- [Mail and Packages integration](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages) provided sensors are not toggle switches intead of entity pickers
+- Ability to add a custom Amazon URL
+- Toggle supported [Mail and Packages integration](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages) sensors on and off
+- Amazaon sensors and camera added
+
+{% endif %}
+
+---
+
+{% endif %}
+
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/moralmunky/Home-Assistant-Mail-And-Packages-Custom-Card)
+[![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/custom-components/hacs)
+![GitHub contributors](https://img.shields.io/github/contributors/moralmunky/Home-Assistant-Mail-And-Packages-Custom-Card)
+![Maintenance](https://img.shields.io/maintenance/yes/2020)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/moralmunky/Home-Assistant-Mail-And-Packages-Custom-Card)
+![GitHub last commit](https://img.shields.io/github/last-commit/moralmunky/Home-Assistant-Mail-And-Packages-Custom-Card)
+
+A Custom Lovelace card to display the [Mail and Packages integration](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages) sensors.
+
+## Credits:
+
+- Huge contributions from [@firstof9](https://github.com/firstof9) moving the project forward and keeping it active!
+  <br/>
+  <a href="https://www.buymeacoffee.com/Moralmunky" target="_blank"><img src="/docs/coffee.png" alt="Buy Us A Coffee" height="51px" width="217px" /></a>
 
 ## Lovelace GUI Setup
 
-Bothh JS files need to be stored inside the path/to/config/www/ folder. In the Lovelace reource URL path, local is the same as the www folder. Construct your path to the JS inside the www folder for the resurce URL. For the example below:
+[Mail and Packages integration](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages) version 3.3 or higher is required.
 
-path/to/config/www/Home-Assistant-Mail-And-Packages-Custom-Card/Home-Assistant-Mail-And-Packages-Custom-Card.js
+Edit you dashbaord and choose 'Add card' find the Mail and Packages card from the list of avaialable cards to add it to your current Dashboard.
 
-path/to/config/www/Home-Assistant-Mail-And-Packages-Custom-Card/Home-Assistant-Mail-And-Packages-Custom-Card-editor.js
+Use the visual card editor to turn on the entities that you have chosen to use in the mail and packages integration.
 
-Configuration > Lovelace Dashboards > Resources
-
-```
-url: /local/Home-Assistant-Mail-And-Packages-Custom-Card/mail-and-packages-card.js
-type: Javascript Module
-```
-Add the card configuration to the cards: section of the view you want the card to be in.
-
-Minimal Setup:
-The remaining sensors can be added in the card configurator.
-```
-- type: 'custom:mail-and-packages-card'
-  name: Mail Summary
-  updated: sensor.mail_updated
-  details: true
-  image: false
-```
+<img src="https://github.com/moralmunky/Home-Assistant-Mail-And-Packages-Custom-Card/blob/master/img/card-image.png?raw=true" alt="Preview of card" />

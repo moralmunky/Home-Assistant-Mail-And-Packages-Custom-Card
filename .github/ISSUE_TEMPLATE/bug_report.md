@@ -2,41 +2,41 @@
 name: Bug report
 about: Create a report to help us improve
 title: ''
-labels: ''
+labels: bug
 assignees: ''
-
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+<!-- READ THIS FIRST:
+- If you need additional help with this template please refer to https://www.home-assistant.io/help/reporting_issues/
+- Make sure you are running the latest version of Home Assistant before reporting an issue: https://github.com/home-assistant/home-assistant/releases
+- Provide as many details as possible. Do not delete any text from this template!
+-->
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+**Checklist:**
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+- [ ] I updated to the latest version available
+- [ ] I cleared the cache of my browser
 
-**Screenshots or Error**
-If applicable, add screenshots to help explain your problem.
+**Release with the issue:**
 
-**Hass environment (please complete the following information):**
-- Type of install
-- OS
+**Last working release (if known):**
 
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
+**Browser and Operating System:**
 
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
+<!--
+Provide details about what browser (and version) you are seeing the issue in. And also which operating system this is on. If possible try to replicate the issue in other browsers and include your findings here.
+-->
 
-**Additional context**
-Add any other context about the problem here.
+**Description of problem:**
+
+<!--
+Explain what the issue is, and how things should look/behave. If possible provide a screenshot with a description.
+-->
+
+**Javascript errors shown in the web inspector (if applicable):**
+
+```
+
+```
+
+**Additional information:**

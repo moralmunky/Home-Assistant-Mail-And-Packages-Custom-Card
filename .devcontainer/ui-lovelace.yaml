@@ -1,0 +1,7 @@
+resources:
+  - url: http://127.0.0.1:5000/mailandpackages-card.js
+    type: module
+views:
+  - cards:
+      - type: custom:mailandpackagescard
+        name: Mail and Packages Card Development
