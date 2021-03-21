@@ -50,7 +50,7 @@ A Custom Lovelace card to display the [Mail and Packages integration](https://gi
 
 ## Lovelace GUI Setup
 
-[Mail and Packages integration](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages) version 3.3 or higher is required.
+[Mail and Packages integration](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages) version 3.2 or higher is required.
 
 Edit you dashbaord and choose 'Add card' find the Mail and Packages card from the list of avaialable cards to add it to your current Dashboard.
 
