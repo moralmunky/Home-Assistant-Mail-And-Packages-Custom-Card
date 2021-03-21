@@ -14,13 +14,13 @@ It may contain bugs or break functionality in addition to adding new features an
 
 ### Breaking Changes
 
-{% if version_installed.replace("v", "").replace(".","") | int < 08  %}
+{% if version_installed.replace("v", "").replace(".","") | int < 071  %}
 This is a complete rewrite. Remove the current card from your dashabord and add a new card from the card picker.
 {% endif %}
 
 ### Changes
 
-{% if version_installed.replace("v", "").replace(".","") | int < 08  %}
+{% if version_installed.replace("v", "").replace(".","") | int < 071  %}
 
 - [Mail and Packages integration](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages) provided sensors are not toggle switches intead of entity pickers
 - Ability to add a custom Amazon URL
