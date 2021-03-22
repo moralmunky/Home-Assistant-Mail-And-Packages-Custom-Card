@@ -34,6 +34,32 @@ const options = {
     name: 'Optional Entities',
     secondary: 'Configure the optional entities',
     show: false,
+  },
+  actions: {
+    icon: 'gesture-tap-hold',
+    name: 'Actions',
+    secondary: 'Perform actions based on tapping/clicking',
+    show: false,
+    options: {
+      tap: {
+        icon: 'gesture-tap',
+        name: 'Tap',
+        secondary: 'Set the action to perform on tap',
+        show: false,
+      },
+      hold: {
+        icon: 'gesture-tap-hold',
+        name: 'Hold',
+        secondary: 'Set the action to perform on hold',
+        show: false,
+      },
+      double_tap: {
+        icon: 'gesture-double-tap',
+        name: 'Double Tap',
+        secondary: 'Set the action to perform on double tap',
+        show: false,
+      },
+    },
   }
 };
 
@@ -299,6 +325,12 @@ export class MailandpackagesCardEditor extends LitElement implements LovelaceCar
                 </ha-formfield>
                 <br>
                 <br>
+                <paper-input
+                  label="Amazon Link URL"
+                  .value=${this._name}
+                  .configValue=${'amazon_url'}
+                  @value-changed=${this._valueChanged}
+                ></paper-input>
                 <ha-formfield .label=${`Toggle Amazon Packages ${this._entity_amazon_packages ? 'off' : 'on'}`}>
                   <ha-switch
                     .checked=${this._entity_amazon_packages !== false}
@@ -377,6 +409,62 @@ export class MailandpackagesCardEditor extends LitElement implements LovelaceCar
                 </paper-dropdown-menu>
               </div>
             `
+      : ''}
+
+          <div class="option" @click=${this._toggleOption} .option=${'actions'}>
+          <div class="row">
+            <ha-icon .icon=${`mdi:${options.actions.icon}`}></ha-icon>
+            <div class="title">${options.actions.name}</div>
+          </div>
+          <div class="secondary">${options.actions.secondary}</div>
+        </div>
+        ${options.actions.show
+          ? html`
+              <div class="values">
+                <div class="option" @click=${this._toggleAction} .option=${'tap'}>
+                  <div class="row">
+                    <ha-icon .icon=${`mdi:${options.actions.options.tap.icon}`}></ha-icon>
+                    <div class="title">${options.actions.options.tap.name}</div>
+                  </div>
+                  <div class="secondary">${options.actions.options.tap.secondary}</div>
+                </div>
+                ${options.actions.options.tap.show
+                  ? html`
+                      <div class="values">
+                        <paper-item>Action Editors Coming Soon</paper-item>
+                      </div>
+                    `
+                  : ''}
+                <div class="option" @click=${this._toggleAction} .option=${'hold'}>
+                  <div class="row">
+                    <ha-icon .icon=${`mdi:${options.actions.options.hold.icon}`}></ha-icon>
+                    <div class="title">${options.actions.options.hold.name}</div>
+                  </div>
+                  <div class="secondary">${options.actions.options.hold.secondary}</div>
+                </div>
+                ${options.actions.options.hold.show
+                  ? html`
+                      <div class="values">
+                        <paper-item>Action Editors Coming Soon</paper-item>
+                      </div>
+                    `
+                  : ''}
+                <div class="option" @click=${this._toggleAction} .option=${'double_tap'}>
+                  <div class="row">
+                    <ha-icon .icon=${`mdi:${options.actions.options.double_tap.icon}`}></ha-icon>
+                    <div class="title">${options.actions.options.double_tap.name}</div>
+                  </div>
+                  <div class="secondary">${options.actions.options.double_tap.secondary}</div>
+                </div>
+                ${options.actions.options.double_tap.show
+                  ? html`
+                      <div class="values">
+                        <paper-item>Action Editors Coming Soon</paper-item>
+                      </div>
+                    `
+                  : ''}
+              </div>
+            `
           : ''}
       </div>
     `;
@@ -391,6 +479,10 @@ export class MailandpackagesCardEditor extends LitElement implements LovelaceCar
 
   private async loadCardHelpers(): Promise<void> {
     this._helpers = await (window as any).loadCardHelpers();
+  }
+
+  private _toggleAction(ev): void {
+    this._toggleThing(ev, options.actions.options);
   }
 
   private _toggleOption(ev): void {

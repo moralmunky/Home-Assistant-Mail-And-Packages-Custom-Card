@@ -156,11 +156,6 @@ export class MailandpackagesCard extends LitElement {
     return html`
       <ha-card
         .header=${this.config.name}
-        @action=${this._handleAction}
-        .actionHandler=${actionHandler({
-          hasHold: hasAction(this.config.hold_action),
-          hasDoubleClick: hasAction(this.config.double_tap_action),
-        })}
         tabindex="0"
         .label=${`Mail and Packages: ${this.config.entity || 'No Entity Defined'}`}
         class="mail-and-packages"
@@ -183,7 +178,11 @@ export class MailandpackagesCard extends LitElement {
       </div>
       ${this.config.show_usps_camera
       ? html`
-      <img class="MailImg clear" src="${uspsCameraUrl}&interval=30" />
+      <img @action=${this._handleAction}
+        .actionHandler=${actionHandler({
+          hasHold: hasAction(this.config.hold_action),
+          hasDoubleClick: hasAction(this.config.double_tap_action),
+        })} class="MailImg clear" src="${uspsCameraUrl}&interval=30" />
       `
       : ""}
 
