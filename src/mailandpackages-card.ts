@@ -111,7 +111,7 @@ export class MailandpackagesCard extends LitElement {
     const entityPackagesDelivered = this.config.entity_packages_delivered ?
       html `<div>Delivered: ${this.hass.states['sensor.mail_packages_delivered'].state} </div>` : '';
 
-    const amazonUrl = this.config.amazon_url ? this.config.amazon_url : false;
+    const amazonUrl = this.config.amazon_url ? this.config.amazon_url : '';
     const entityAmazonPackages = this.config.entity_amazon_packages ?
     html `<div><a href="${amazonUrl}" title="Open the amazon website." target="_blank">Amazon</a>: ${this.hass.states['sensor.mail_amazon_packages'].state}</div>` : '';
     const entityAmazonPackagesDelivered = this.config.entity_amazon_packages_delivered ?
@@ -238,6 +238,9 @@ export class MailandpackagesCard extends LitElement {
     }
     .mail-and-packages .clear {
         clear: both;
+    }
+    .mail-and-packages a {
+        color: var(--secondary-text-color)
     }
     .mail-and-packages .deliveryTotals {
       display: flex;

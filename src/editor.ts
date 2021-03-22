@@ -327,7 +327,7 @@ export class MailandpackagesCardEditor extends LitElement implements LovelaceCar
                 <br>
                 <paper-input
                   label="Amazon Link URL"
-                  .value=${this._name}
+                  .value=${this._amazon_url}
                   .configValue=${'amazon_url'}
                   @value-changed=${this._valueChanged}
                 ></paper-input>
