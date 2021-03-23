@@ -115,7 +115,7 @@ export class MailandpackagesCard extends LitElement {
     const entityAmazonPackages = this.config.entity_amazon_packages ?
     html `<div><a href="${amazonUrl}" title="Open the amazon website." target="_blank">Amazon</a>: ${this.hass.states['sensor.mail_amazon_packages'].state}</div>` : '';
     const entityAmazonPackagesDelivered = this.config.entity_amazon_packages_delivered ?
-    html `<div>Amazon Delviered: ${this.hass.states['sensor.mail_amazon_packages_delivered'].state}</div>` : '';
+    html `<div>Amazon Delivered: ${this.hass.states['sensor.mail_amazon_packages_delivered'].state}</div>` : '';
     const entityAmazonHubPackages = this.config.entity_amazon_hub_packages ?
     html `<div> Amazon Hub: ${this.hass.states['sensor.mail_amazon_hub_packages'].state}</div>` : '';
     const amazonCameraUrl = this.hass.states['camera.mail_amazon_delivery_camera'].attributes.entity_picture;
