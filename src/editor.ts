@@ -60,7 +60,7 @@ const options = {
         show: false,
       },
     },
-  }
+  },
 };
 
 @customElement('mailandpackages-card-editor')
@@ -195,8 +195,8 @@ export class MailandpackagesCardEditor extends LitElement implements LovelaceCar
 
     return html`
       <div class="card-config">
-      <h2>${localize('common.name')} (v${CARD_VERSION})</h2>
-      <p>A custom companion card for the ${localize('common.name')} custom integration.</p>
+        <h2>${localize('common.name')} (v${CARD_VERSION})</h2>
+        <p>A custom companion card for the ${localize('common.name')} custom integration.</p>
         <div class="option" @click=${this._toggleOption} .option=${'required'}>
           <div class="row">
             <ha-icon .icon=${`mdi:${options.required.icon}`}></ha-icon>
@@ -207,7 +207,7 @@ export class MailandpackagesCardEditor extends LitElement implements LovelaceCar
         ${options.required.show
           ? html`
               <div class="values">
-              <paper-input
+                <paper-input
                   label="Name (Required)"
                   .value=${this._name}
                   .configValue=${'name'}
@@ -215,7 +215,7 @@ export class MailandpackagesCardEditor extends LitElement implements LovelaceCar
                 ></paper-input>
               </div>
             `
-      : ''}
+          : ''}
 
         <div class="option" @click=${this._toggleOption} .option=${'builtin_sensors'}>
           <div class="row">
@@ -227,8 +227,9 @@ export class MailandpackagesCardEditor extends LitElement implements LovelaceCar
         ${options.builtin_sensors.show
           ? html`
               <div class="values">
-
-                <ha-formfield .label=${`Toggle Total Packages Delivered ${this._entity_packages_delivered ? 'off' : 'on'}`}>
+                <ha-formfield
+                  .label=${`Toggle Total Packages Delivered ${this._entity_packages_delivered ? 'off' : 'on'}`}
+                >
                   <ha-switch
                     .checked=${this._entity_packages_delivered !== false}
                     .configValue=${'entity_packages_delivered'}
@@ -236,7 +237,9 @@ export class MailandpackagesCardEditor extends LitElement implements LovelaceCar
                   ></ha-switch>
                 </ha-formfield>
 
-                <ha-formfield .label=${`Toggle Total Packages In-Transit ${this._entity_packages_in_transit ? 'off' : 'on'}`}>
+                <ha-formfield
+                  .label=${`Toggle Total Packages In-Transit ${this._entity_packages_in_transit ? 'off' : 'on'}`}
+                >
                   <ha-switch
                     .checked=${this._entity_packages_in_transit !== false}
                     .configValue=${'entity_packages_in_transit'}
@@ -276,7 +279,9 @@ export class MailandpackagesCardEditor extends LitElement implements LovelaceCar
                   ></ha-switch>
                 </ha-formfield>
 
-                <ha-formfield .label=${`Toggle Canada Post Packates ${this._entity_canada_post_packages ? 'off' : 'on'}`}>
+                <ha-formfield
+                  .label=${`Toggle Canada Post Packates ${this._entity_canada_post_packages ? 'off' : 'on'}`}
+                >
                   <ha-switch
                     .checked=${this._entity_canada_post_packages !== false}
                     .configValue=${'entity_canada_post_packages'}
@@ -323,8 +328,8 @@ export class MailandpackagesCardEditor extends LitElement implements LovelaceCar
                     @change=${this._valueChanged}
                   ></ha-switch>
                 </ha-formfield>
-                <br>
-                <br>
+                <br />
+                <br />
                 <paper-input
                   label="Amazon Link URL"
                   .value=${this._amazon_url}
@@ -339,7 +344,9 @@ export class MailandpackagesCardEditor extends LitElement implements LovelaceCar
                   ></ha-switch>
                 </ha-formfield>
 
-                <ha-formfield .label=${`Toggle Amazon Packages Delivered ${this._entity_amazon_packages_delivered ? 'off' : 'on'}`}>
+                <ha-formfield
+                  .label=${`Toggle Amazon Packages Delivered ${this._entity_amazon_packages_delivered ? 'off' : 'on'}`}
+                >
                   <ha-switch
                     .checked=${this._entity_amazon_packages_delivered !== false}
                     .configValue=${'entity_amazon_packages_delivered'}
@@ -363,8 +370,8 @@ export class MailandpackagesCardEditor extends LitElement implements LovelaceCar
                   ></ha-switch>
                 </ha-formfield>
 
-                <br>
-                <br>
+                <br />
+                <br />
 
                 <ha-formfield .label=${`Toggle warning ${this._show_warning ? 'off' : 'on'}`}>
                   <ha-switch
@@ -382,9 +389,9 @@ export class MailandpackagesCardEditor extends LitElement implements LovelaceCar
                 </ha-formfield>
               </div>
             `
-      : ''}
+          : ''}
 
-          <div class="option" @click=${this._toggleOption} .option=${'optional_sensors'}>
+        <div class="option" @click=${this._toggleOption} .option=${'optional_sensors'}>
           <div class="row">
             <ha-icon .icon=${`mdi:${options.optional_sensors.icon}`}></ha-icon>
             <div class="title">${options.optional_sensors.name}</div>
@@ -394,7 +401,7 @@ export class MailandpackagesCardEditor extends LitElement implements LovelaceCar
         ${options.optional_sensors.show
           ? html`
               <div class="values">
-              <paper-dropdown-menu
+                <paper-dropdown-menu
                   label="Delivery Summary"
                   @value-changed=${this._valueChanged}
                   .configValue=${'entity_delivery_message'}
@@ -409,9 +416,9 @@ export class MailandpackagesCardEditor extends LitElement implements LovelaceCar
                 </paper-dropdown-menu>
               </div>
             `
-      : ''}
+          : ''}
 
-          <div class="option" @click=${this._toggleOption} .option=${'actions'}>
+        <div class="option" @click=${this._toggleOption} .option=${'actions'}>
           <div class="row">
             <ha-icon .icon=${`mdi:${options.actions.icon}`}></ha-icon>
             <div class="title">${options.actions.name}</div>
