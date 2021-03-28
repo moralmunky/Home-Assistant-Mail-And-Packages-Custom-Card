@@ -52,11 +52,7 @@ export class MailandpackagesCard extends LitElement {
 
   public static getStubConfig(): object {
     return {
-      name: 'Mail and Packages',
-      entity_usps_mail: true,
-      entity_packages_delivered: true,
-      entity_packages_in_transit: true,
-      show_usps_camera: true,
+      name: 'Mail and Packages'
     };
   }
 
@@ -79,10 +75,6 @@ export class MailandpackagesCard extends LitElement {
 
     this.config = {
       title: 'Mail and Packages',
-      entity_usps_mail: true,
-      entity_packages_delivered: true,
-      entity_packages_in_transit: true,
-      show_usps_camera: true,
       ...config,
     };
   }
@@ -103,39 +95,39 @@ export class MailandpackagesCard extends LitElement {
       html `Last Check: ${this.hass.states['sensor.mail_updated'].state}` : '';
 
     const entityUspsMail = this.config.entity_usps_mail ?
-      html `<div><a href="https://informeddelivery.usps.com/" title="Open the USPS Informed Delivery website." target="_blank">USPS Mail</a>: ${this.hass.states['sensor.mail_usps_mail'].state}</div>` : '';
+      html `<div><a href="https://informeddelivery.usps.com/" title="Open the USPS Informed Delivery website." target="_blank"><img src="/hacsfiles/img/square_mail.png" /></a> ${this.hass.states['sensor.mail_usps_mail'].state}</div>` : '';
     const uspsCameraUrl = this.hass.states['camera.mail_usps_camera'].attributes.entity_picture;
 
     const entityPackagesInTransit = this.config.entity_packages_in_transit ?
-      html `<div>In-transit: ${this.hass.states['sensor.mail_packages_in_transit'].state} </div>` : '';
+      html `<div><img src="/hacsfiles/img/square_in-transit.png" /> ${this.hass.states['sensor.mail_packages_in_transit'].state} </div>` : '';
     const entityPackagesDelivered = this.config.entity_packages_delivered ?
-      html `<div>Delivered: ${this.hass.states['sensor.mail_packages_delivered'].state} </div>` : '';
+      html `<div><img src="/hacsfiles/img/square_delivery.png" /> ${this.hass.states['sensor.mail_packages_delivered'].state} </div>` : '';
 
     const amazonUrl = this.config.amazon_url ? this.config.amazon_url : '';
     const entityAmazonPackages = this.config.entity_amazon_packages ?
-    html `<div><a href="${amazonUrl}" title="Open the amazon website." target="_blank">Amazon</a>: ${this.hass.states['sensor.mail_amazon_packages'].state}</div>` : '';
+    html `<div><a href="${amazonUrl}" title="Open the amazon website." target="_blank"><img src="/hacsfiles/img/square_amazon.png" /></a> ${this.hass.states['sensor.mail_amazon_packages'].state}</div>` : '';
     const entityAmazonPackagesDelivered = this.config.entity_amazon_packages_delivered ?
-    html `<div>Amazon Delivered: ${this.hass.states['sensor.mail_amazon_packages_delivered'].state}</div>` : '';
+    html `<div><img src="/hacsfiles/img/square_delivery.png" /> ${this.hass.states['sensor.mail_amazon_packages_delivered'].state}</div>` : '';
     const entityAmazonHubPackages = this.config.entity_amazon_hub_packages ?
-    html `<div> Amazon Hub: ${this.hass.states['sensor.mail_amazon_hub_packages'].state}</div>` : '';
+    html `<div><img src="/hacsfiles/img/square_amazon-hub.png" /> ${this.hass.states['sensor.mail_amazon_hub_packages'].state}</div>` : '';
     const amazonCameraUrl = this.hass.states['camera.mail_amazon_delivery_camera'].attributes.entity_picture;
 
     const entityFedexPackages = this.config.entity_fedex_packages ?
-      html `<div><a href="$https://www.fedex.com/apps/fedextracking" title="Open the FedEx website." target="_blank">Fedex Packages: ${this.hass.states['sensor.mail_fedex_packages'].state}</div>` : '';
+      html `<div><a href="$https://www.fedex.com/apps/fedextracking" title="Open the FedEx website." target="_blank"><img src="/hacsfiles/img/square_fedex.png" /></a> ${this.hass.states['sensor.mail_fedex_packages'].state}</div>` : '';
     const entityUpsPackages = this.config.entity_UPS_packages ?
-      html `<div><a href="$https://wwwapps.ups.com/mcdp" title="Open the UPS website." target="_blank">UPS Packages: ${this.hass.states['sensor.mail_ups_packages'].state}</div>` : '';
+      html `<div><a href="$https://wwwapps.ups.com/mcdp" title="Open the UPS website." target="_blank"><img src="/hacsfiles/img/square_ups.png" /></a> ${this.hass.states['sensor.mail_ups_packages'].state}</div>` : '';
     const entityUspsPackages = this.config.entity_USPS_packages ?
-      html `<div><a href="https://informeddelivery.usps.com/" title="Open the USPS Informed Delivery website." target="_blank">USPS Packages: ${this.hass.states['sensor.mail_usps_packages'].state}</div>` : '';
+      html `<div><a href="https://informeddelivery.usps.com/" title="Open the USPS Informed Delivery website." target="_blank"><img src="/hacsfiles/img/square_usps.png" /></a> ${this.hass.states['sensor.mail_usps_packages'].state}</div>` : '';
     const entityUspsException = this.config.entity_USPS_exceptions ?
-      html `<div>USPS Exceptions: ${this.hass.states['sensor.mail_usps_exception'].state}</div>` : '';
+      html `<div><img src="/hacsfiles/img/square_usps.png" /> ${this.hass.states['sensor.mail_usps_exception'].state}</div>` : '';
     const entityCanadaPostPackages = this.config.entity_canada_post_packages ?
-      html `<div><a href="https://www.canadapost-postescanada.ca" title="Open the Canada Post website." target="_blank">Canada Post Packages:</a> ${this.hass.states['sensor.mail_canada_post_packages'].state}</div>` : '';
+      html `<div><a href="https://www.canadapost-postescanada.ca" title="Open the Canada Post website." target="_blank"><img src="/hacsfiles/img/square_canada-post.png" /></a> ${this.hass.states['sensor.mail_canada_post_packages'].state}</div>` : '';
     const entityDhlPackages = this.config.entity_DHL_packages ?
-      html `<div><a href="https://www.dhl.com" title="Open the DHL website." target="_blank">DHL Packages</a>: ${this.hass.states['sensor.mail_dhl_packages'].state}</div>` : '';
+      html `<div><a href="https://www.dhl.com" title="Open the DHL website." target="_blank"><img src="/hacsfiles/img/square_dhl.png" /></a> ${this.hass.states['sensor.mail_dhl_packages'].state}</div>` : '';
     const entityHermesPckages = this.config.entity_hermes_packages ?
-      html `<div><a href="https://www.myhermes.co.uk" title="Open the Hermes  website." target="_blank">Hermes Packages</a>: ${this.hass.states['sensor.mail_hermes_packages'].state}</div>` : '';
+      html `<div><a href="https://www.myhermes.co.uk" title="Open the Hermes  website." target="_blank"><img src="/hacsfiles/img/square_hermes-packages.png" /></a> ${this.hass.states['sensor.mail_hermes_packages'].state}</div>` : '';
     const entityRoyalMailPackages = this.config.entity_royal_mail_packages ?
-      html `<div><a href="https://www.royalmail.com" title="Open the Royal Mail website." target="_blank">Royal Mail Packages</a>: ${this.hass.states['sensor.mail_royal_mail_packages'].state}</div>` : '';
+      html `<div><a href="https://www.royalmail.com" title="Open the Royal Mail website." target="_blank"><img src="/hacsfiles/img/square_royal-mail.png" /></a> ${this.hass.states['sensor.mail_royal_mail_packages'].state}</div>` : '';
 
     const entityDeliveryMessage = this.config.entity_delivery_message ? this.hass.states[this.config.entity_delivery_message].state : '';
 
@@ -152,29 +144,15 @@ export class MailandpackagesCard extends LitElement {
     if (entityMailUpdateCheck) {
       return this._showError(localize('common.show_error'));
     }
-
+// removed .header=${this.config.name} rfom ha-card
     return html`
       <ha-card
-        .header=${this.config.name}
         tabindex="0"
         .label=${`Mail and Packages: ${this.config.entity || 'No Entity Defined'}`}
         class="mail-and-packages"
       >
-      <div class="deliveryTotals">
-      ${entityUspsMail}
-      ${entityPackagesInTransit}
-      ${entityPackagesDelivered}
-      </div>
-      <p>${entityDeliveryMessage}</p>
-      <div class="packagesTotals">
-      ${entityUspsPackages}
-      ${entityFedexPackages}
-      ${entityUpsPackages}
-      ${entityUspsException}
-      ${entityCanadaPostPackages}
-      ${entityDhlPackages}
-      ${entityHermesPckages}
-      ${entityRoyalMailPackages}
+      <div class="header">
+      <h1 class="card-header">${this.config.name}</h1>
       </div>
       ${this.config.show_usps_camera
       ? html`
@@ -185,19 +163,36 @@ export class MailandpackagesCard extends LitElement {
         })} class="MailImg clear" src="${uspsCameraUrl}&interval=30" />
       `
       : ""}
-
+      <div class="deliveryTotals">
+      ${entityUspsMail}
+      ${entityPackagesInTransit}
+      ${entityPackagesDelivered}
+      </div>
+      <p class="summary">${entityDeliveryMessage}</p>
+      <div class="packagesTotals">
+      ${entityUspsPackages}
+      ${entityFedexPackages}
+      ${entityUpsPackages}
+      ${entityUspsException}
+      ${entityCanadaPostPackages}
+      ${entityDhlPackages}
+      ${entityHermesPckages}
+      ${entityRoyalMailPackages}
+      </div>
       <!-- ${entityAmazonPackages || entityAmazonPackagesDelivered || entityAmazonHubPackages || this.config.show_amazon_camera
-        ? html`<h1>Amazon</h1>` : ''} -->
+      ? html`<h1>Amazon</h1>` : ''} -->
+      <div class="amazon">
       ${entityAmazonPackages}
       ${entityAmazonPackagesDelivered}
       ${entityAmazonHubPackages}
+      </div>
       ${this.config.show_amazon_camera
       ? html`
       <img class="MailImg clear" src="${amazonCameraUrl}&interval=30" />
       `
       : ""}
-
-      <p class=".usps_update">${entityMailUpdate} v${CARD_VERSION}</p>
+      <div class="footer">
+      <span class="usps_update">${entityMailUpdate}</span> <span class="version">v${CARD_VERSION}</span></div>
 
       </ha-card>
     `;
@@ -233,7 +228,7 @@ export class MailandpackagesCard extends LitElement {
     return css`
     .mail-and-packages {
         margin: auto;
-        padding: 2em;
+        padding: 0;
         position: relative;
     }
     .mail-and-packages .clear {
@@ -242,21 +237,41 @@ export class MailandpackagesCard extends LitElement {
     .mail-and-packages a {
         color: var(--secondary-text-color)
     }
+    .mail-and-packages .summary {
+      padding: 0 1rem;
+    }
     .mail-and-packages .deliveryTotals {
       display: flex;
       flex-flow: row nowrap;
       justify-content: space-around;
     }
     .mail-and-packages .deliveryTotals div {
-      flex: 1 1 33%;
+      flex: 0 0 33.3%;
     }
-    .mail-and-packages .packagesTotals {
+    .mail-and-packages .packagesTotals, .mail-and-packages .amazon, .mail-and-packages .deliveryTotals {
       display: flex;
       flex-flow: row wrap;
       justify-content: space-around;
     }
-    .mail-and-packages .packagesTotals div {
+    .mail-and-packages .packagesTotals div, .mail-and-packages .amazon div, .mail-and-packages .deliveryTotals div {
+      box-sizing: border-box;
       flex: 0 0 50%;
+      width: 50%;
+      height: 45px;
+      background-color: var(--secondary-background-color);
+      margin-bottom: 2px;
+      font-size: 2rem;
+      line-height: 45px;
+    }
+    .mail-and-packages .amazon div, .mail-and-packages .deliveryTotals div {
+      flex: 0 0 33.3%;
+      font-size: 2rem;
+    }
+    .mail-and-packages .packagesTotals img, .mail-and-packages .amazon img, .mail-and-packages .deliveryTotals img {
+      width: 45px;
+      height: 45px;
+      float: left;
+      margin-right: 1rem;
     }
     .mail-and-packages .packagesTotals::after {
       content: "";
@@ -266,11 +281,23 @@ export class MailandpackagesCard extends LitElement {
         position: relative;
         width: 100%;
         height: auto;
-        margin-top: 1em;
+        margin-top: 2px;
     }
-    .mail-and-packages .usps_update {
-                    font-size: .7em;
-                }
+    .mail-and-packages .header, .mail-and-packages .footer {
+        background-color: #588EF7;
+        padding: 1rem;
+        margin-bottom: 2px;
+    }
+    .mail-and-packages .footer {
+        padding: 0 1rem;
+        margin-bottom: 0;
+    }
+    .mail-and-packages .usps_update, .mail-and-packages .version {
+        font-size: .7rem;
+    }
+    .mail-and-packages .version {
+        float: right;
+    }
     `;
   }
 }

@@ -29,7 +29,7 @@ A Custom Lovelace card to display the [Mail and Packages integration](https://gi
 Both JS files need to be stored inside the path/to/config/www/ folder. In the Lovelace reource URL path, local is the same as the www folder. Construct your path to the JS inside the www folder for the resurce URL. For the example below:
 
 ```
-path/to/config/www/Home-Assistant-Mail-And-Packages-Custom-Card/mailandpackages-card.js
+path/to/config/www/Home-Assistant-Mail-And-Packages-Custom-Card/Home-Assistant-Mail-And-Packages-Custom-Card.js
 
 path/to/config/www/Home-Assistant-Mail-And-Packages-Custom-Card/editor.js
 ```
@@ -37,7 +37,7 @@ path/to/config/www/Home-Assistant-Mail-And-Packages-Custom-Card/editor.js
 Configuration > Lovelace Dashboards > Resources
 
 ```
-url: /local/Home-Assistant-Mail-And-Packages-Custom-Card/mailandpackages-card.js
+url: /local/Home-Assistant-Mail-And-Packages-Custom-Card/Home-Assistant-Mail-And-Packages-Custom-Card.js
 type: Javascript Module
 ```
 

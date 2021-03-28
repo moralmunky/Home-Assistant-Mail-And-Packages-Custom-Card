@@ -1,7 +1,7 @@
 {
-  "name": "mailandpackages-card",
+  "name": "home-assistant-mail-and-packages-custom-card",
   "version": "1.3.2",
-  "description": "Lovelace mailandpackages-card",
+  "description": "Lovelace Home-Assistant-Mail-And-Packages-Custom-Card",
   "keywords": [
     "home-assistant",
     "homeassistant",
@@ -10,9 +10,9 @@
     "lovelace",
     "custom-cards"
   ],
-  "module": "mailandpackages-card.js",
-  "repository": "git@github.com:custom_cards/mailandpackages-card.git",
-  "author": "Ian Richardson <iantrich@gmail.com>",
+  "module": "Home-Assistant-Mail-And-Packages-Custom-Card.js",
+  "repository": "git@github.com:custom_cards/Home-Assistant-Mail-And-Packages-Custom-Card.git",
+  "author": "Christopher <christopher@moralmunky.com",
   "license": "MIT",
   "dependencies": {
     "custom-card-helpers": "^1.6.6",
@@ -36,6 +36,8 @@
     "rollup": "^1.32.1",
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-copy": "^3.4.0",
+    "rollup-plugin-copy-assets": "^2.0.3",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-serve": "^1.1.0",
     "rollup-plugin-terser": "^5.3.1",

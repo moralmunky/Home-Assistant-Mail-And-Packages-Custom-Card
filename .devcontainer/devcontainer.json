@@ -9,6 +9,7 @@
     "-v",
     "${env:HOME}${env:USERPROFILE}/.ssh:/tmp/.ssh" // This is added so you can push from inside the container
   ],
+  "postStartCommand": "npm start",
   "extensions": [
     "github.vscode-pull-request-github",
     "eamodio.gitlens",

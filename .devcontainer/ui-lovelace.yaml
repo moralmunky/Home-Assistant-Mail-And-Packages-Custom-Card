@@ -1,5 +1,5 @@
 resources:
-  - url: http://127.0.0.1:5000/mailandpackages-card.js
+  - url: http://127.0.0.1:5000/Home-Assistant-Mail-And-Packages-Custom-Card.js
     type: module
 views:
   - cards:
