@@ -8,15 +8,15 @@ jobs:
   release:
     name: Prepare release
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
+    # steps:
+    #   - uses: actions/checkout@v1
 
-      # Build
-      - name: Build the file
-        run: |
-          cd /home/runner/work/Home-Assistant-Mail-And-Packages-Custom-Card/Home-Assistant-Mail-And-Packages-Custom-Card
-          npm install
-          npm run build
+    #   # Build
+    #   - name: Build the file
+    #     run: |
+    #       cd /home/runner/work/Home-Assistant-Mail-And-Packages-Custom-Card/Home-Assistant-Mail-And-Packages-Custom-Card
+    #       npm install
+    #       npm run build
 
       # Upload build file to the release as an asset.
       # - name: Upload zip to release
