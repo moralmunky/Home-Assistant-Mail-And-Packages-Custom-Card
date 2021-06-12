@@ -101,24 +101,28 @@ export class MailandpackagesCardEditor extends LitElement implements LovelaceCar
     return this._config?.entity_packages_in_transit || false;
   }
 
-  get _show_amazon_camera(): boolean {
-    return this._config?.show_amazon_camera || false;
-  }
-
-  get _entity_fedex_packages(): boolean {
-    return this._config?.entity_fedex_packages || false;
-  }
-
-  get _entity_UPS_packages(): boolean {
-    return this._config?.entity_UPS_packages || false;
+  get _show_usps_camera(): boolean {
+    return this._config?.show_usps_camera || false;
   }
 
   get _entity_USPS_packages(): boolean {
     return this._config?.entity_USPS_packages || false;
   }
 
-  get _entity_USPS_exceptions(): boolean {
-    return this._config?.entity_USPS_exceptions || false;
+  get _entity_USPS_exception(): boolean {
+    return this._config?.entity_USPS_exception || false;
+  }
+
+  get _entity_UPS_packages(): boolean {
+    return this._config?.entity_UPS_packages || false;
+  }
+
+  get _entity_UPS_exception(): boolean {
+    return this._config?.entity_UPS_exception || false;
+  }
+
+  get _entity_fedex_packages(): boolean {
+    return this._config?.entity_fedex_packages || false;
   }
 
   get _entity_canada_post_packages(): boolean {
@@ -141,8 +145,8 @@ export class MailandpackagesCardEditor extends LitElement implements LovelaceCar
     return this._config?.entity_delivery_message || '';
   }
 
-  get _show_usps_camera(): boolean {
-    return this._config?.show_usps_camera || false;
+  get _show_amazon_camera(): boolean {
+    return this._config?.show_amazon_camera || false;
   }
 
   get _entity_amazon_packages(): boolean {
@@ -151,6 +155,10 @@ export class MailandpackagesCardEditor extends LitElement implements LovelaceCar
 
   get _entity_amazon_packages_delivered(): boolean {
     return this._config?.entity_amazon_packages_delivered || false;
+  }
+
+  get _entity_amazon_exception(): boolean {
+    return this._config?.entity_amazon_exception || false;
   }
 
   get _entity_amazon_hub_packages(): boolean {
@@ -246,73 +254,7 @@ export class MailandpackagesCardEditor extends LitElement implements LovelaceCar
                     @change=${this._valueChanged}
                   ></ha-switch>
                 </ha-formfield>
-
-                <ha-formfield .label=${`Toggle FedEx Packages ${this._entity_fedex_packages ? 'off' : 'on'}`}>
-                  <ha-switch
-                    .checked=${this._entity_fedex_packages !== false}
-                    .configValue=${'entity_fedex_packages'}
-                    @change=${this._valueChanged}
-                  ></ha-switch>
-                </ha-formfield>
-
-                <ha-formfield .label=${`Toggle UPS Packages ${this._entity_UPS_packages ? 'off' : 'on'}`}>
-                  <ha-switch
-                    .checked=${this._entity_UPS_packages !== false}
-                    .configValue=${'entity_UPS_packages'}
-                    @change=${this._valueChanged}
-                  ></ha-switch>
-                </ha-formfield>
-
-                <ha-formfield .label=${`Toggle USPS Packages ${this._entity_USPS_packages ? 'off' : 'on'}`}>
-                  <ha-switch
-                    .checked=${this._entity_USPS_packages !== false}
-                    .configValue=${'entity_USPS_packages'}
-                    @change=${this._valueChanged}
-                  ></ha-switch>
-                </ha-formfield>
-
-                <ha-formfield .label=${`Toggle USPS Exceptions ${this._entity_USPS_exceptions ? 'off' : 'on'}`}>
-                  <ha-switch
-                    .checked=${this._entity_USPS_exceptions !== false}
-                    .configValue=${'entity_USPS_exceptions'}
-                    @change=${this._valueChanged}
-                  ></ha-switch>
-                </ha-formfield>
-
-                <ha-formfield
-                  .label=${`Toggle Canada Post Packates ${this._entity_canada_post_packages ? 'off' : 'on'}`}
-                >
-                  <ha-switch
-                    .checked=${this._entity_canada_post_packages !== false}
-                    .configValue=${'entity_canada_post_packages'}
-                    @change=${this._valueChanged}
-                  ></ha-switch>
-                </ha-formfield>
-
-                <ha-formfield .label=${`Toggle DHL Packages ${this._entity_DHL_packages ? 'off' : 'on'}`}>
-                  <ha-switch
-                    .checked=${this._entity_DHL_packages !== false}
-                    .configValue=${'entity_DHL_packages'}
-                    @change=${this._valueChanged}
-                  ></ha-switch>
-                </ha-formfield>
-
-                <ha-formfield .label=${`Toggle Hermes Packages ${this._entity_hermes_packages ? 'off' : 'on'}`}>
-                  <ha-switch
-                    .checked=${this._entity_hermes_packages !== false}
-                    .configValue=${'entity_hermes_packages'}
-                    @change=${this._valueChanged}
-                  ></ha-switch>
-                </ha-formfield>
-
-                <ha-formfield .label=${`Toggle Royal Mail ${this._entity_royal_mail_packages ? 'off' : 'on'}`}>
-                  <ha-switch
-                    .checked=${this._entity_royal_mail_packages !== false}
-                    .configValue=${'entity_royal_mail_packages'}
-                    @change=${this._valueChanged}
-                  ></ha-switch>
-                </ha-formfield>
-
+                <h3>USPS</h3>
                 <ha-formfield .label=${`Toggle USPS Mail ${this._entity_usps_mail ? 'off' : 'on'}`}>
                   <ha-switch
                     .checked=${this._entity_usps_mail !== false}
@@ -328,8 +270,88 @@ export class MailandpackagesCardEditor extends LitElement implements LovelaceCar
                     @change=${this._valueChanged}
                   ></ha-switch>
                 </ha-formfield>
-                <br />
-                <br />
+
+                <ha-formfield .label=${`Toggle USPS Packages ${this._entity_USPS_packages ? 'off' : 'on'}`}>
+                  <ha-switch
+                    .checked=${this._entity_USPS_packages !== false}
+                    .configValue=${'entity_USPS_packages'}
+                    @change=${this._valueChanged}
+                  ></ha-switch>
+                </ha-formfield>
+
+                <ha-formfield .label=${`Toggle USPS Exception ${this._entity_USPS_exception ? 'off' : 'on'}`}>
+                  <ha-switch
+                    .checked=${this._entity_USPS_exception !== false}
+                    .configValue=${'entity_USPS_exception'}
+                    @change=${this._valueChanged}
+                  ></ha-switch>
+                </ha-formfield>
+
+                <h3>UPS</h3>
+                <ha-formfield .label=${`Toggle UPS Packages ${this._entity_UPS_packages ? 'off' : 'on'}`}>
+                  <ha-switch
+                    .checked=${this._entity_UPS_packages !== false}
+                    .configValue=${'entity_UPS_packages'}
+                    @change=${this._valueChanged}
+                  ></ha-switch>
+                </ha-formfield>
+
+                <ha-formfield .label=${`Toggle UPS Exception ${this._entity_UPS_exception ? 'off' : 'on'}`}>
+                  <ha-switch
+                    .checked=${this._entity_UPS_exception !== false}
+                    .configValue=${'entity_UPS_exception'}
+                    @change=${this._valueChanged}
+                  ></ha-switch>
+                </ha-formfield>
+
+                <h3>FedEx</h3>
+                <ha-formfield .label=${`Toggle FedEx Packages ${this._entity_fedex_packages ? 'off' : 'on'}`}>
+                  <ha-switch
+                    .checked=${this._entity_fedex_packages !== false}
+                    .configValue=${'entity_fedex_packages'}
+                    @change=${this._valueChanged}
+                  ></ha-switch>
+                </ha-formfield>
+
+                <h3>DHL</h3>
+                <ha-formfield .label=${`Toggle DHL Packages ${this._entity_DHL_packages ? 'off' : 'on'}`}>
+                  <ha-switch
+                    .checked=${this._entity_DHL_packages !== false}
+                    .configValue=${'entity_DHL_packages'}
+                    @change=${this._valueChanged}
+                  ></ha-switch>
+                </ha-formfield>
+
+                <h3>Canada Post</h3>
+                <ha-formfield
+                  .label=${`Toggle Canada Post Packates ${this._entity_canada_post_packages ? 'off' : 'on'}`}
+                >
+                  <ha-switch
+                    .checked=${this._entity_canada_post_packages !== false}
+                    .configValue=${'entity_canada_post_packages'}
+                    @change=${this._valueChanged}
+                  ></ha-switch>
+                </ha-formfield>
+
+                <h3>Hermes Packages</h3>
+                <ha-formfield .label=${`Toggle Hermes Packages ${this._entity_hermes_packages ? 'off' : 'on'}`}>
+                  <ha-switch
+                    .checked=${this._entity_hermes_packages !== false}
+                    .configValue=${'entity_hermes_packages'}
+                    @change=${this._valueChanged}
+                  ></ha-switch>
+                </ha-formfield>
+
+                <h3>Royal Mail</h3>
+                <ha-formfield .label=${`Toggle Royal Mail ${this._entity_royal_mail_packages ? 'off' : 'on'}`}>
+                  <ha-switch
+                    .checked=${this._entity_royal_mail_packages !== false}
+                    .configValue=${'entity_royal_mail_packages'}
+                    @change=${this._valueChanged}
+                  ></ha-switch>
+                </ha-formfield>
+
+                <h3>Amazon</h3>
                 <paper-input
                   label="Amazon Link URL"
                   .value=${this._amazon_url}
@@ -350,6 +372,16 @@ export class MailandpackagesCardEditor extends LitElement implements LovelaceCar
                   <ha-switch
                     .checked=${this._entity_amazon_packages_delivered !== false}
                     .configValue=${'entity_amazon_packages_delivered'}
+                    @change=${this._valueChanged}
+                  ></ha-switch>
+                </ha-formfield>
+
+                <ha-formfield
+                  .label=${`Toggle Amazon Exception ${this._entity_amazon_exception ? 'off' : 'on'}`}
+                >
+                  <ha-switch
+                    .checked=${this._entity_amazon_exception !== false}
+                    .configValue=${'entity_amazon_exception'}
                     @change=${this._valueChanged}
                   ></ha-switch>
                 </ha-formfield>
