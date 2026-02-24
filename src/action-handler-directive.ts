@@ -1,34 +1,31 @@
-import { directive, PropertyPart } from 'lit-html';
+import { directive, Directive, DirectiveParameters, ElementPart } from 'lit/directive.js';
 
-import { ActionHandlerDetail, ActionHandlerOptions } from 'custom-card-helpers/dist/types';
+import { ActionHandlerOptions } from 'custom-card-helpers/dist/types';
 import { fireEvent } from 'custom-card-helpers';
 
-const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
+const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
-interface ActionHandler extends HTMLElement {
-  holdTime: number;
-  bind(element: Element, options): void;
-}
 interface ActionHandlerElement extends HTMLElement {
   actionHandler?: boolean;
 }
 
-declare global {
-  interface HASSDomEvents {
-    action: ActionHandlerDetail;
+class ActionHandlerDirectiveClass extends Directive {
+  update(part: ElementPart, [options]: [ActionHandlerOptions]) {
+    const element = part.element as ActionHandlerElement;
+    actionHandlerBind(element, options);
+    return this.render(options);
+  }
+
+  render(_options: ActionHandlerOptions) {
+    return undefined;
   }
 }
 
-class ActionHandler extends HTMLElement implements ActionHandler {
+class ActionHandlerHTMLElement extends HTMLElement {
   public holdTime = 500;
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public ripple: any;
-
   protected timer?: number;
-
   protected held = false;
-
   private dblClickTimeout?: number;
 
   constructor() {
@@ -62,29 +59,22 @@ class ActionHandler extends HTMLElement implements ActionHandler {
     });
   }
 
-  public bind(element: ActionHandlerElement, options): void {
+  public bind(element: ActionHandlerElement, options: ActionHandlerOptions): void {
     if (element.actionHandler) {
       return;
     }
     element.actionHandler = true;
 
     element.addEventListener('contextmenu', (ev: Event) => {
-      const e = ev || window.event;
-      if (e.preventDefault) {
-        e.preventDefault();
-      }
-      if (e.stopPropagation) {
-        e.stopPropagation();
-      }
-      e.cancelBubble = true;
-      e.returnValue = false;
+      ev.preventDefault();
+      ev.stopPropagation();
       return false;
     });
 
     const start = (ev: Event): void => {
       this.held = false;
-      let x;
-      let y;
+      let x: number;
+      let y: number;
       if ((ev as TouchEvent).touches) {
         x = (ev as TouchEvent).touches[0].pageX;
         y = (ev as TouchEvent).touches[0].pageY;
@@ -100,7 +90,6 @@ class ActionHandler extends HTMLElement implements ActionHandler {
     };
 
     const end = (ev: Event): void => {
-      // Prevent mouse event if touch event
       ev.preventDefault();
       if (['touchend', 'touchcancel'].includes(ev.type) && this.timer === undefined) {
         return;
@@ -109,20 +98,20 @@ class ActionHandler extends HTMLElement implements ActionHandler {
       this.stopAnimation();
       this.timer = undefined;
       if (this.held) {
-        fireEvent(element, 'action', { action: 'hold' });
+        fireEvent(element as any, 'action', { action: 'hold' });
       } else if (options.hasDoubleClick) {
         if ((ev.type === 'click' && (ev as MouseEvent).detail < 2) || !this.dblClickTimeout) {
           this.dblClickTimeout = window.setTimeout(() => {
             this.dblClickTimeout = undefined;
-            fireEvent(element, 'action', { action: 'tap' });
+            fireEvent(element as any, 'action', { action: 'tap' });
           }, 250);
         } else {
           clearTimeout(this.dblClickTimeout);
           this.dblClickTimeout = undefined;
-          fireEvent(element, 'action', { action: 'double_tap' });
+          fireEvent(element as any, 'action', { action: 'double_tap' });
         }
       } else {
-        fireEvent(element, 'action', { action: 'tap' });
+        fireEvent(element as any, 'action', { action: 'tap' });
       }
     };
 
@@ -136,10 +125,8 @@ class ActionHandler extends HTMLElement implements ActionHandler {
     element.addEventListener('touchstart', start, { passive: true });
     element.addEventListener('touchend', end);
     element.addEventListener('touchcancel', end);
-
     element.addEventListener('mousedown', start, { passive: true });
     element.addEventListener('click', end);
-
     element.addEventListener('keyup', handleEnter);
   }
 
@@ -161,29 +148,26 @@ class ActionHandler extends HTMLElement implements ActionHandler {
   }
 }
 
-// TODO You need to replace all instances of "action-handler-mailandpackages" with "action-handler-<your card name>"
-customElements.define('action-handler-mailandpackages', ActionHandler);
+customElements.define('action-handler-mailandpackages', ActionHandlerHTMLElement);
 
-const getActionHandler = (): ActionHandler => {
+const getActionHandler = (): ActionHandlerHTMLElement => {
   const body = document.body;
   if (body.querySelector('action-handler-mailandpackages')) {
-    return body.querySelector('action-handler-mailandpackages') as ActionHandler;
+    return body.querySelector('action-handler-mailandpackages') as ActionHandlerHTMLElement;
   }
 
   const actionhandler = document.createElement('action-handler-mailandpackages');
   body.appendChild(actionhandler);
 
-  return actionhandler as ActionHandler;
+  return actionhandler as ActionHandlerHTMLElement;
 };
 
 export const actionHandlerBind = (element: ActionHandlerElement, options: ActionHandlerOptions): void => {
-  const actionhandler: ActionHandler = getActionHandler();
+  const actionhandler = getActionHandler();
   if (!actionhandler) {
     return;
   }
   actionhandler.bind(element, options);
 };
 
-export const actionHandler = directive((options: ActionHandlerOptions = {}) => (part: PropertyPart): void => {
-  actionHandlerBind(part.committer.element as ActionHandlerElement, options);
-});
+export const actionHandler = directive(ActionHandlerDirectiveClass);

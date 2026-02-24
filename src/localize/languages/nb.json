@@ -1,7 +1,46 @@
 {
   "common": {
+    "name": "Post og pakker",
     "version": "Versjon",
-    "invalid_configuration": "Ikke gyldig konfiguration",
-    "show_warning": "Vis advarsel"
+    "invalid_configuration": "Ikke gyldig konfigurasjon",
+    "show_warning": "Vis advarsel",
+    "show_error": "Post og pakker integrasjon ikke funnet."
+  },
+  "tracker": {
+    "title": "Pakkesporing",
+    "no_packages": "Ingen pakker spores",
+    "registry_not_found": "Pakkeregisteret ble ikke funnet.",
+    "registry_hint": "Aktiver pakkeregisteret i innstillingene for Post og pakker-integrasjonen.",
+    "add_package": "Legg til pakke",
+    "add": "Legg til",
+    "cancel": "Avbryt",
+    "clear_delivered": "Fjern leverte",
+    "clear_all_delivered": "Fjern alle leverte",
+    "mark_delivered": "Merk som levert",
+    "clear": "Fjern",
+    "track_on": "Spor hos",
+    "tracking_number": "Sporingsnummer",
+    "tracking_placeholder": "Sporingsnummer",
+    "carrier": "Transportør",
+    "source": {
+      "label": "Kilde",
+      "email": "E-post",
+      "manual": "Manuell",
+      "carrier_email": "Transportør-e-post",
+      "unknown": "Ukjent"
+    },
+    "status": {
+      "detected": "Oppdaget",
+      "in_transit": "Under transport",
+      "out_for_delivery": "Ute for levering",
+      "delivered": "Levert",
+      "active": "aktive",
+      "delivered_count": "levert"
+    },
+    "first_seen": "Først sett",
+    "last_updated": "Sist oppdatert",
+    "confirmed": "Bekreftet",
+    "exception": "Unntak",
+    "exception_text": "Leveringsunntak rapportert"
   }
 }

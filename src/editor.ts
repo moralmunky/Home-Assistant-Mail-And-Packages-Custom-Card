@@ -1,22 +1,13 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/camelcase */
-import {
-  LitElement,
-  html,
-  customElement,
-  property,
-  TemplateResult,
-  CSSResult,
-  css,
-  internalProperty,
-} from 'lit-element';
-import { HomeAssistant, fireEvent, LovelaceCardEditor, ActionConfig } from 'custom-card-helpers';
+import { LitElement, html, css, TemplateResult, CSSResultGroup } from 'lit';
+import { customElement, property, state } from 'lit/decorators.js';
+import { HomeAssistant, fireEvent, LovelaceCardEditor } from 'custom-card-helpers';
 
 import { MailAndPackagesCardConfig } from './types';
 import { CARD_VERSION } from './const';
+import { CARRIERS } from './carriers';
 import { localize } from './localize/localize';
 
-const options = {
+const options: Record<string, any> = {
   required: {
     icon: 'tune',
     name: 'Required',
@@ -24,15 +15,15 @@ const options = {
     show: true,
   },
   builtin_sensors: {
-    icon: 'palette',
-    name: 'Built-in Entities',
-    secondary: 'Configure the built-in entities',
+    icon: 'package-variant',
+    name: 'Carrier Sensors',
+    secondary: 'Toggle carrier package count sensors',
     show: false,
   },
   optional_sensors: {
-    icon: 'palette',
+    icon: 'message-text',
     name: 'Optional Entities',
-    secondary: 'Configure the optional entities',
+    secondary: 'Configure optional entities',
     show: false,
   },
   actions: {
@@ -41,39 +32,39 @@ const options = {
     secondary: 'Perform actions based on tapping/clicking',
     show: false,
     options: {
-      tap: {
-        icon: 'gesture-tap',
-        name: 'Tap',
-        secondary: 'Set the action to perform on tap',
-        show: false,
-      },
-      hold: {
-        icon: 'gesture-tap-hold',
-        name: 'Hold',
-        secondary: 'Set the action to perform on hold',
-        show: false,
-      },
-      double_tap: {
-        icon: 'gesture-double-tap',
-        name: 'Double Tap',
-        secondary: 'Set the action to perform on double tap',
-        show: false,
-      },
+      tap: { icon: 'gesture-tap', name: 'Tap', secondary: 'Set the action to perform on tap', show: false },
+      hold: { icon: 'gesture-tap-hold', name: 'Hold', secondary: 'Set the action to perform on hold', show: false },
+      double_tap: { icon: 'gesture-double-tap', name: 'Double Tap', secondary: 'Set the action to perform on double tap', show: false },
     },
   },
 };
 
+function cfgBool(config: MailAndPackagesCardConfig | undefined, key: string): boolean {
+  if (!config) return false;
+  if (config[key] !== undefined) return !!config[key];
+  // Legacy uppercase compat
+  const legacyMap: Record<string, string> = {
+    entity_usps_packages: 'entity_USPS_packages',
+    entity_usps_exception: 'entity_USPS_exception',
+    entity_ups_packages: 'entity_UPS_packages',
+    entity_ups_exception: 'entity_UPS_exception',
+    entity_dhl_packages: 'entity_DHL_packages',
+  };
+  const legacy = legacyMap[key];
+  if (legacy && config[legacy] !== undefined) return !!config[legacy];
+  return false;
+}
+
 @customElement('mailandpackages-card-editor')
 export class MailandpackagesCardEditor extends LitElement implements LovelaceCardEditor {
   @property({ attribute: false }) public hass?: HomeAssistant;
-  @internalProperty() private _config?: MailAndPackagesCardConfig;
-  @internalProperty() private _toggle?: boolean;
-  @internalProperty() private _helpers?: any;
+  @state() private _config?: MailAndPackagesCardConfig;
+  @state() private _toggle?: boolean;
+  @state() private _helpers?: any;
   private _initialized = false;
 
   public setConfig(config: MailAndPackagesCardConfig): void {
     this._config = config;
-
     this.loadCardHelpers();
   }
 
@@ -81,130 +72,51 @@ export class MailandpackagesCardEditor extends LitElement implements LovelaceCar
     if (!this._initialized) {
       this._initialize();
     }
-
     return true;
   }
 
-  get _name(): string {
-    return this._config?.name || '';
-  }
+  get _name(): string { return this._config?.name || ''; }
+  get _entity_usps_mail(): boolean { return this._config?.entity_usps_mail || false; }
+  get _entity_packages_delivered(): boolean { return this._config?.entity_packages_delivered || false; }
+  get _entity_packages_in_transit(): boolean { return this._config?.entity_packages_in_transit || false; }
+  get _show_usps_camera(): boolean { return this._config?.show_usps_camera || false; }
+  get _show_amazon_camera(): boolean { return this._config?.show_amazon_camera || false; }
+  get _entity_delivery_message(): string { return this._config?.entity_delivery_message || ''; }
+  get _amazon_url(): string { return this._config?.amazon_url || ''; }
+  get _entity_amazon_packages(): boolean { return this._config?.entity_amazon_packages || false; }
+  get _entity_amazon_packages_delivered(): boolean { return this._config?.entity_amazon_packages_delivered || false; }
+  get _entity_amazon_exception(): boolean { return this._config?.entity_amazon_exception || false; }
+  get _entity_amazon_hub_packages(): boolean { return this._config?.entity_amazon_hub_packages || false; }
+  get _show_warning(): boolean { return this._config?.show_warning || false; }
+  get _show_error(): boolean { return this._config?.show_error || false; }
+  get _show_registry_totals(): boolean { return this._config?.show_registry_totals || false; }
 
-  get _entity_usps_mail(): boolean {
-    return this._config?.entity_usps_mail || false;
-  }
-
-  get _entity_packages_delivered(): boolean {
-    return this._config?.entity_packages_delivered || false;
-  }
-
-  get _entity_packages_in_transit(): boolean {
-    return this._config?.entity_packages_in_transit || false;
-  }
-
-  get _show_usps_camera(): boolean {
-    return this._config?.show_usps_camera || false;
-  }
-
-  get _entity_USPS_packages(): boolean {
-    return this._config?.entity_USPS_packages || false;
-  }
-
-  get _entity_USPS_exception(): boolean {
-    return this._config?.entity_USPS_exception || false;
-  }
-
-  get _entity_UPS_packages(): boolean {
-    return this._config?.entity_UPS_packages || false;
-  }
-
-  get _entity_UPS_exception(): boolean {
-    return this._config?.entity_UPS_exception || false;
-  }
-
-  get _entity_fedex_packages(): boolean {
-    return this._config?.entity_fedex_packages || false;
-  }
-
-  get _entity_canada_post_packages(): boolean {
-    return this._config?.entity_canada_post_packages || false;
-  }
-
-  get _entity_DHL_packages(): boolean {
-    return this._config?.entity_DHL_packages || false;
-  }
-
-  get _entity_hermes_packages(): boolean {
-    return this._config?.entity_hermes_packages || false;
-  }
-
-  get _entity_royal_mail_packages(): boolean {
-    return this._config?.entity_royal_mail_packages || false;
-  }
-
-  get _entity_delivery_message(): string {
-    return this._config?.entity_delivery_message || '';
-  }
-
-  get _show_amazon_camera(): boolean {
-    return this._config?.show_amazon_camera || false;
-  }
-
-  get _entity_amazon_packages(): boolean {
-    return this._config?.entity_amazon_packages || false;
-  }
-
-  get _entity_amazon_packages_delivered(): boolean {
-    return this._config?.entity_amazon_packages_delivered || false;
-  }
-
-  get _entity_amazon_exception(): boolean {
-    return this._config?.entity_amazon_exception || false;
-  }
-
-  get _entity_amazon_hub_packages(): boolean {
-    return this._config?.entity_amazon_hub_packages || false;
-  }
-
-  get _amazon_url(): string {
-    return this._config?.amazon_url || '';
-  }
-
-  get _show_warning(): boolean {
-    return this._config?.show_warning || false;
-  }
-
-  get _show_error(): boolean {
-    return this._config?.show_error || false;
-  }
-
-  get _tap_action(): ActionConfig {
-    return this._config?.tap_action || { action: 'more-info' };
-  }
-
-  get _hold_action(): ActionConfig {
-    return this._config?.hold_action || { action: 'none' };
-  }
-
-  get _double_tap_action(): ActionConfig {
-    return this._config?.double_tap_action || { action: 'none' };
+  private _carrierToggle(configKey: string, label: string): TemplateResult {
+    const checked = cfgBool(this._config, configKey);
+    return html`
+      <ha-formfield .label=${`Toggle ${label} ${checked ? 'off' : 'on'}`}>
+        <ha-switch
+          .checked=${checked}
+          .configValue=${configKey}
+          @change=${this._valueChanged}
+        ></ha-switch>
+      </ha-formfield>
+    `;
   }
 
   protected render(): TemplateResult | void {
-    if (!this.hass || !this._helpers) {
-      return html``;
-    }
+    if (!this.hass || !this._helpers) return html``;
 
-    // The climate more-info has ha-switch and paper-dropdown-menu elements that are lazy loaded unless explicitly done here
     this._helpers.importMoreInfoControl('climate');
 
-    // You can restrict on domain type
     const entities = Object.keys(this.hass.states).filter(eid => eid.startsWith('sensor.mail_'));
-    //const entities_cameras = Object.keys(this.hass.states).filter(eid => eid.substr(0, eid.indexOf('.')) === 'camera');
 
     return html`
       <div class="card-config">
         <h2>${localize('common.name')} (v${CARD_VERSION})</h2>
-        <p>A custom companion card for the ${localize('common.name')} custom integration.</p>
+        <p>Companion card for the Mail and Packages integration.</p>
+
+        <!-- Required -->
         <div class="option" @click=${this._toggleOption} .option=${'required'}>
           <div class="row">
             <ha-icon .icon=${`mdi:${options.required.icon}`}></ha-icon>
@@ -212,19 +124,13 @@ export class MailandpackagesCardEditor extends LitElement implements LovelaceCar
           </div>
           <div class="secondary">${options.required.secondary}</div>
         </div>
-        ${options.required.show
-          ? html`
-              <div class="values">
-                <paper-input
-                  label="Name (Required)"
-                  .value=${this._name}
-                  .configValue=${'name'}
-                  @value-changed=${this._valueChanged}
-                ></paper-input>
-              </div>
-            `
-          : ''}
+        ${options.required.show ? html`
+          <div class="values">
+            <paper-input label="Name (Required)" .value=${this._name} .configValue=${'name'} @value-changed=${this._valueChanged}></paper-input>
+          </div>
+        ` : ''}
 
+        <!-- Carrier Sensors -->
         <div class="option" @click=${this._toggleOption} .option=${'builtin_sensors'}>
           <div class="row">
             <ha-icon .icon=${`mdi:${options.builtin_sensors.icon}`}></ha-icon>
@@ -232,197 +138,46 @@ export class MailandpackagesCardEditor extends LitElement implements LovelaceCar
           </div>
           <div class="secondary">${options.builtin_sensors.secondary}</div>
         </div>
-        ${options.builtin_sensors.show
-          ? html`
-              <div class="values">
-                <ha-formfield
-                  .label=${`Toggle Total Packages Delivered ${this._entity_packages_delivered ? 'off' : 'on'}`}
-                >
-                  <ha-switch
-                    .checked=${this._entity_packages_delivered !== false}
-                    .configValue=${'entity_packages_delivered'}
-                    @change=${this._valueChanged}
-                  ></ha-switch>
-                </ha-formfield>
+        ${options.builtin_sensors.show ? html`
+          <div class="values">
+            <!-- Totals -->
+            ${this._carrierToggle('entity_packages_delivered', 'Total Packages Delivered')}
+            ${this._carrierToggle('entity_packages_in_transit', 'Total Packages In-Transit')}
 
-                <ha-formfield
-                  .label=${`Toggle Total Packages In-Transit ${this._entity_packages_in_transit ? 'off' : 'on'}`}
-                >
-                  <ha-switch
-                    .checked=${this._entity_packages_in_transit !== false}
-                    .configValue=${'entity_packages_in_transit'}
-                    @change=${this._valueChanged}
-                  ></ha-switch>
-                </ha-formfield>
-                <h3>USPS</h3>
-                <ha-formfield .label=${`Toggle USPS Mail ${this._entity_usps_mail ? 'off' : 'on'}`}>
-                  <ha-switch
-                    .checked=${this._entity_usps_mail !== false}
-                    .configValue=${'entity_usps_mail'}
-                    @change=${this._valueChanged}
-                  ></ha-switch>
-                </ha-formfield>
+            <!-- USPS special -->
+            <h3>USPS</h3>
+            ${this._carrierToggle('entity_usps_mail', 'USPS Mail')}
+            ${this._carrierToggle('show_usps_camera', 'USPS Camera')}
+            ${this._carrierToggle('entity_usps_packages', 'USPS Packages')}
+            ${this._carrierToggle('entity_usps_exception', 'USPS Exception')}
 
-                <ha-formfield .label=${`Toggle USPS camera ${this._show_usps_camera ? 'off' : 'on'}`}>
-                  <ha-switch
-                    .checked=${this._show_usps_camera !== false}
-                    .configValue=${'show_usps_camera'}
-                    @change=${this._valueChanged}
-                  ></ha-switch>
-                </ha-formfield>
+            <!-- Standard carriers from registry -->
+            ${CARRIERS.filter(c => c.id !== 'usps').map(c => html`
+              <h3>${c.name}</h3>
+              ${this._carrierToggle(c.configKey, `${c.name} Packages`)}
+              ${c.exceptionConfigKey ? this._carrierToggle(c.exceptionConfigKey, `${c.name} Exception`) : ''}
+            `)}
 
-                <ha-formfield .label=${`Toggle USPS Packages ${this._entity_USPS_packages ? 'off' : 'on'}`}>
-                  <ha-switch
-                    .checked=${this._entity_USPS_packages !== false}
-                    .configValue=${'entity_USPS_packages'}
-                    @change=${this._valueChanged}
-                  ></ha-switch>
-                </ha-formfield>
+            <!-- Amazon -->
+            <h3>Amazon</h3>
+            <paper-input label="Amazon Link URL" .value=${this._amazon_url} .configValue=${'amazon_url'} @value-changed=${this._valueChanged}></paper-input>
+            ${this._carrierToggle('entity_amazon_packages', 'Amazon Packages')}
+            ${this._carrierToggle('entity_amazon_packages_delivered', 'Amazon Packages Delivered')}
+            ${this._carrierToggle('entity_amazon_exception', 'Amazon Exception')}
+            ${this._carrierToggle('entity_amazon_hub_packages', 'Amazon Hub Packages')}
+            ${this._carrierToggle('show_amazon_camera', 'Amazon Camera')}
 
-                <ha-formfield .label=${`Toggle USPS Exception ${this._entity_USPS_exception ? 'off' : 'on'}`}>
-                  <ha-switch
-                    .checked=${this._entity_USPS_exception !== false}
-                    .configValue=${'entity_USPS_exception'}
-                    @change=${this._valueChanged}
-                  ></ha-switch>
-                </ha-formfield>
+            <!-- Registry -->
+            <h3>Package Registry</h3>
+            ${this._carrierToggle('show_registry_totals', 'Registry Totals Overlay')}
 
-                <h3>UPS</h3>
-                <ha-formfield .label=${`Toggle UPS Packages ${this._entity_UPS_packages ? 'off' : 'on'}`}>
-                  <ha-switch
-                    .checked=${this._entity_UPS_packages !== false}
-                    .configValue=${'entity_UPS_packages'}
-                    @change=${this._valueChanged}
-                  ></ha-switch>
-                </ha-formfield>
+            <br />
+            ${this._carrierToggle('show_warning', 'Warning')}
+            ${this._carrierToggle('show_error', 'Error')}
+          </div>
+        ` : ''}
 
-                <ha-formfield .label=${`Toggle UPS Exception ${this._entity_UPS_exception ? 'off' : 'on'}`}>
-                  <ha-switch
-                    .checked=${this._entity_UPS_exception !== false}
-                    .configValue=${'entity_UPS_exception'}
-                    @change=${this._valueChanged}
-                  ></ha-switch>
-                </ha-formfield>
-
-                <h3>FedEx</h3>
-                <ha-formfield .label=${`Toggle FedEx Packages ${this._entity_fedex_packages ? 'off' : 'on'}`}>
-                  <ha-switch
-                    .checked=${this._entity_fedex_packages !== false}
-                    .configValue=${'entity_fedex_packages'}
-                    @change=${this._valueChanged}
-                  ></ha-switch>
-                </ha-formfield>
-
-                <h3>DHL</h3>
-                <ha-formfield .label=${`Toggle DHL Packages ${this._entity_DHL_packages ? 'off' : 'on'}`}>
-                  <ha-switch
-                    .checked=${this._entity_DHL_packages !== false}
-                    .configValue=${'entity_DHL_packages'}
-                    @change=${this._valueChanged}
-                  ></ha-switch>
-                </ha-formfield>
-
-                <h3>Canada Post</h3>
-                <ha-formfield
-                  .label=${`Toggle Canada Post Packates ${this._entity_canada_post_packages ? 'off' : 'on'}`}
-                >
-                  <ha-switch
-                    .checked=${this._entity_canada_post_packages !== false}
-                    .configValue=${'entity_canada_post_packages'}
-                    @change=${this._valueChanged}
-                  ></ha-switch>
-                </ha-formfield>
-
-                <h3>Hermes Packages</h3>
-                <ha-formfield .label=${`Toggle Hermes Packages ${this._entity_hermes_packages ? 'off' : 'on'}`}>
-                  <ha-switch
-                    .checked=${this._entity_hermes_packages !== false}
-                    .configValue=${'entity_hermes_packages'}
-                    @change=${this._valueChanged}
-                  ></ha-switch>
-                </ha-formfield>
-
-                <h3>Royal Mail</h3>
-                <ha-formfield .label=${`Toggle Royal Mail ${this._entity_royal_mail_packages ? 'off' : 'on'}`}>
-                  <ha-switch
-                    .checked=${this._entity_royal_mail_packages !== false}
-                    .configValue=${'entity_royal_mail_packages'}
-                    @change=${this._valueChanged}
-                  ></ha-switch>
-                </ha-formfield>
-
-                <h3>Amazon</h3>
-                <paper-input
-                  label="Amazon Link URL"
-                  .value=${this._amazon_url}
-                  .configValue=${'amazon_url'}
-                  @value-changed=${this._valueChanged}
-                ></paper-input>
-                <ha-formfield .label=${`Toggle Amazon Packages ${this._entity_amazon_packages ? 'off' : 'on'}`}>
-                  <ha-switch
-                    .checked=${this._entity_amazon_packages !== false}
-                    .configValue=${'entity_amazon_packages'}
-                    @change=${this._valueChanged}
-                  ></ha-switch>
-                </ha-formfield>
-
-                <ha-formfield
-                  .label=${`Toggle Amazon Packages Delivered ${this._entity_amazon_packages_delivered ? 'off' : 'on'}`}
-                >
-                  <ha-switch
-                    .checked=${this._entity_amazon_packages_delivered !== false}
-                    .configValue=${'entity_amazon_packages_delivered'}
-                    @change=${this._valueChanged}
-                  ></ha-switch>
-                </ha-formfield>
-
-                <ha-formfield
-                  .label=${`Toggle Amazon Exception ${this._entity_amazon_exception ? 'off' : 'on'}`}
-                >
-                  <ha-switch
-                    .checked=${this._entity_amazon_exception !== false}
-                    .configValue=${'entity_amazon_exception'}
-                    @change=${this._valueChanged}
-                  ></ha-switch>
-                </ha-formfield>
-
-                <ha-formfield .label=${`Toggle Amazon Hub Packages ${this._entity_amazon_hub_packages ? 'off' : 'on'}`}>
-                  <ha-switch
-                    .checked=${this._entity_amazon_hub_packages !== false}
-                    .configValue=${'entity_amazon_hub_packages'}
-                    @change=${this._valueChanged}
-                  ></ha-switch>
-                </ha-formfield>
-
-                <ha-formfield .label=${`Toggle Amazon camera ${this._show_amazon_camera ? 'off' : 'on'}`}>
-                  <ha-switch
-                    .checked=${this._show_amazon_camera !== false}
-                    .configValue=${'show_amazon_camera'}
-                    @change=${this._valueChanged}
-                  ></ha-switch>
-                </ha-formfield>
-
-                <br />
-                <br />
-
-                <ha-formfield .label=${`Toggle warning ${this._show_warning ? 'off' : 'on'}`}>
-                  <ha-switch
-                    .checked=${this._show_warning !== false}
-                    .configValue=${'show_warning'}
-                    @change=${this._valueChanged}
-                  ></ha-switch>
-                </ha-formfield>
-                <ha-formfield .label=${`Toggle error ${this._show_error ? 'off' : 'on'}`}>
-                  <ha-switch
-                    .checked=${this._show_error !== false}
-                    .configValue=${'show_error'}
-                    @change=${this._valueChanged}
-                  ></ha-switch>
-                </ha-formfield>
-              </div>
-            `
-          : ''}
-
+        <!-- Optional Entities -->
         <div class="option" @click=${this._toggleOption} .option=${'optional_sensors'}>
           <div class="row">
             <ha-icon .icon=${`mdi:${options.optional_sensors.icon}`}></ha-icon>
@@ -430,26 +185,17 @@ export class MailandpackagesCardEditor extends LitElement implements LovelaceCar
           </div>
           <div class="secondary">${options.optional_sensors.secondary}</div>
         </div>
-        ${options.optional_sensors.show
-          ? html`
-              <div class="values">
-                <paper-dropdown-menu
-                  label="Delivery Summary"
-                  @value-changed=${this._valueChanged}
-                  .configValue=${'entity_delivery_message'}
-                >
-                  <paper-listbox slot="dropdown-content" .selected=${entities.indexOf(this._entity_delivery_message)}>
-                    ${entities.map(entity_delivery_message => {
-                      return html`
-                        <paper-item>${entity_delivery_message}</paper-item>
-                      `;
-                    })}
-                  </paper-listbox>
-                </paper-dropdown-menu>
-              </div>
-            `
-          : ''}
+        ${options.optional_sensors.show ? html`
+          <div class="values">
+            <paper-dropdown-menu label="Delivery Summary" @value-changed=${this._valueChanged} .configValue=${'entity_delivery_message'}>
+              <paper-listbox slot="dropdown-content" .selected=${entities.indexOf(this._entity_delivery_message)}>
+                ${entities.map(e => html`<paper-item>${e}</paper-item>`)}
+              </paper-listbox>
+            </paper-dropdown-menu>
+          </div>
+        ` : ''}
 
+        <!-- Actions -->
         <div class="option" @click=${this._toggleOption} .option=${'actions'}>
           <div class="row">
             <ha-icon .icon=${`mdi:${options.actions.icon}`}></ha-icon>
@@ -457,54 +203,20 @@ export class MailandpackagesCardEditor extends LitElement implements LovelaceCar
           </div>
           <div class="secondary">${options.actions.secondary}</div>
         </div>
-        ${options.actions.show
-          ? html`
-              <div class="values">
-                <div class="option" @click=${this._toggleAction} .option=${'tap'}>
-                  <div class="row">
-                    <ha-icon .icon=${`mdi:${options.actions.options.tap.icon}`}></ha-icon>
-                    <div class="title">${options.actions.options.tap.name}</div>
-                  </div>
-                  <div class="secondary">${options.actions.options.tap.secondary}</div>
+        ${options.actions.show ? html`
+          <div class="values">
+            ${['tap', 'hold', 'double_tap'].map(action => html`
+              <div class="option" @click=${this._toggleAction} .option=${action}>
+                <div class="row">
+                  <ha-icon .icon=${`mdi:${options.actions.options[action].icon}`}></ha-icon>
+                  <div class="title">${options.actions.options[action].name}</div>
                 </div>
-                ${options.actions.options.tap.show
-                  ? html`
-                      <div class="values">
-                        <paper-item>Action Editors Coming Soon</paper-item>
-                      </div>
-                    `
-                  : ''}
-                <div class="option" @click=${this._toggleAction} .option=${'hold'}>
-                  <div class="row">
-                    <ha-icon .icon=${`mdi:${options.actions.options.hold.icon}`}></ha-icon>
-                    <div class="title">${options.actions.options.hold.name}</div>
-                  </div>
-                  <div class="secondary">${options.actions.options.hold.secondary}</div>
-                </div>
-                ${options.actions.options.hold.show
-                  ? html`
-                      <div class="values">
-                        <paper-item>Action Editors Coming Soon</paper-item>
-                      </div>
-                    `
-                  : ''}
-                <div class="option" @click=${this._toggleAction} .option=${'double_tap'}>
-                  <div class="row">
-                    <ha-icon .icon=${`mdi:${options.actions.options.double_tap.icon}`}></ha-icon>
-                    <div class="title">${options.actions.options.double_tap.name}</div>
-                  </div>
-                  <div class="secondary">${options.actions.options.double_tap.secondary}</div>
-                </div>
-                ${options.actions.options.double_tap.show
-                  ? html`
-                      <div class="values">
-                        <paper-item>Action Editors Coming Soon</paper-item>
-                      </div>
-                    `
-                  : ''}
+                <div class="secondary">${options.actions.options[action].secondary}</div>
               </div>
-            `
-          : ''}
+              ${options.actions.options[action].show ? html`<div class="values"><paper-item>Action Editors Coming Soon</paper-item></div>` : ''}
+            `)}
+          </div>
+        ` : ''}
       </div>
     `;
   }
@@ -520,15 +232,10 @@ export class MailandpackagesCardEditor extends LitElement implements LovelaceCar
     this._helpers = await (window as any).loadCardHelpers();
   }
 
-  private _toggleAction(ev): void {
-    this._toggleThing(ev, options.actions.options);
-  }
+  private _toggleAction(ev: any): void { this._toggleThing(ev, options.actions.options); }
+  private _toggleOption(ev: any): void { this._toggleThing(ev, options); }
 
-  private _toggleOption(ev): void {
-    this._toggleThing(ev, options);
-  }
-
-  private _toggleThing(ev, optionList): void {
+  private _toggleThing(ev: any, optionList: any): void {
     const show = !optionList[ev.target.option].show;
     for (const [key] of Object.entries(optionList)) {
       optionList[key].show = false;
@@ -537,17 +244,15 @@ export class MailandpackagesCardEditor extends LitElement implements LovelaceCar
     this._toggle = !this._toggle;
   }
 
-  private _valueChanged(ev): void {
-    if (!this._config || !this.hass) {
-      return;
-    }
+  private _valueChanged(ev: any): void {
+    if (!this._config || !this.hass) return;
     const target = ev.target;
-    if (this[`_${target.configValue}`] === target.value) {
-      return;
-    }
+    if (this[`_${target.configValue}`] === target.value) return;
     if (target.configValue) {
       if (target.value === '') {
-        delete this._config[target.configValue];
+        const updated = { ...this._config };
+        delete updated[target.configValue];
+        this._config = updated;
       } else {
         this._config = {
           ...this._config,
@@ -558,36 +263,14 @@ export class MailandpackagesCardEditor extends LitElement implements LovelaceCar
     fireEvent(this, 'config-changed', { config: this._config });
   }
 
-  static get styles(): CSSResult {
+  static get styles(): CSSResultGroup {
     return css`
-      .option {
-        padding: 4px 0px;
-        cursor: pointer;
-      }
-      .row {
-        display: flex;
-        margin-bottom: -14px;
-        pointer-events: none;
-      }
-      .title {
-        padding-left: 16px;
-        margin-top: -6px;
-        pointer-events: none;
-      }
-      .secondary {
-        padding-left: 40px;
-        color: var(--secondary-text-color);
-        pointer-events: none;
-      }
-      .values {
-        padding-left: 16px;
-        background: var(--secondary-background-color);
-        display: grid;
-      }
-      ha-formfield {
-        padding-bottom: 8px;
-        margin-bottom: 10px;
-      }
+      .option { padding: 4px 0; cursor: pointer; }
+      .row { display: flex; margin-bottom: -14px; pointer-events: none; }
+      .title { padding-left: 16px; margin-top: -6px; pointer-events: none; }
+      .secondary { padding-left: 40px; color: var(--secondary-text-color); pointer-events: none; }
+      .values { padding-left: 16px; background: var(--secondary-background-color); display: grid; }
+      ha-formfield { padding-bottom: 8px; margin-bottom: 10px; }
     `;
   }
 }
