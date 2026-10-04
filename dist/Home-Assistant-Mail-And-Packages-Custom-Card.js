@@ -101,6 +101,8 @@ class MailAndPackagesCard extends LitElement {
         const ups_packages = this._config.ups_packages ? this.hass.states[this._config.ups_packages].state : false;
         const usps_packages = this._config.usps_packages ? this.hass.states[this._config.usps_packages].state : false;
         const amazon_packages = this._config.amazon_packages ? this.hass.states[this._config.amazon_packages].state : false;
+        const walmart_packages = this._config.walmart_packages ? this.hass.states[this._config.walmart_packages]?.state ?? 'unavailable' : false;
+        const home_depot_packages = this._config.home_depot_packages ? this.hass.states[this._config.home_depot_packages]?.state ?? 'unavailable' : false;
         const usps_mail = this._config.usps_mail ? this.hass.states[this._config.usps_mail].state : false;
         
         const mail_icon = usps_mail > 0 ? 'mailbox-open-up' : 'mailbox-outline';
@@ -108,6 +110,8 @@ class MailAndPackagesCard extends LitElement {
         const ups_icon = ups_packages > 0 ? 'package-variant' : 'package-variant-closed';
         const fedex_icon = fedex_packages > 0 ? 'package-variant' : 'package-variant-closed';
         const amazon_icon = amazon_packages > 0 ? 'package-variant' : 'package-variant-closed';
+        const walmart_icon = walmart_packages > 0 ? 'package-variant' : 'package-variant-closed';
+        const home_depot_icon = home_depot_packages > 0 ? 'package-variant' : 'package-variant-closed';
  
         this.numberElements++;
 
@@ -174,6 +178,20 @@ class MailAndPackagesCard extends LitElement {
         <li class="item"><span class="mail-ha-icon">
                 <ha-icon icon="mdi:${amazon_icon}"></ha-icon>
             </span><a href="https://www.amazon.com/gp/css/order-history/" title="Open the Amazon site" target="_blank"><span class="no-break">Amazon: ${amazon_packages}</span></a></li>
+            `
+            : ""}
+    ${walmart_packages !== false
+    ? html`
+        <li class="item"><span class="mail-ha-icon">
+                <ha-icon icon="mdi:${walmart_icon}"></ha-icon>
+            </span><a href="https://www.walmart.com/orders" title="Open the Walmart site" target="_blank"><span class="no-break">Walmart: ${walmart_packages}</span></a></li>
+            `
+            : ""}
+    ${home_depot_packages !== false
+    ? html`
+        <li class="item"><span class="mail-ha-icon">
+                <ha-icon icon="mdi:${home_depot_icon}"></ha-icon>
+            </span><a href="https://www.homedepot.com/myaccount/purchase-history" title="Open the Home Depot site" target="_blank"><span class="no-break">Home Depot: ${home_depot_packages}</span></a></li>
             `
             : ""}
     </ul>
